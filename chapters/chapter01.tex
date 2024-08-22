@@ -1,0 +1,174 @@
+\chapter{Events and Probabilities}
+
+\section{Probability Spaces}
+
+\begin{definition}
+  A \emph{probability space} is a triple
+  $(\Omega, \mathcal{F}, \mathbb{P})$
+  where
+  \begin{itemize}
+    \item $\Omega$ is called the \emph{sample space}
+      (the set of all possible
+      outcomes of a random experiment);
+    \item $\mathcal{F} \subseteq \mathcal{P}(\Omega)$,
+      called the \emph{event space},\footnote{The elements of $\mathcal{F}$ are called \emph{events}. Events with cardinality 1 are called \emph{elementary}.} is nonempty
+      and must satisfy:
+      \begin{enumerate}[(i)]
+        \item if $A \in \mathcal{F}$, then
+          $A^c \in \mathcal{F}$,
+        \item if $A_1, A_2, \dots \in \mathcal{F}$,
+          then
+          $\bigcup_{i=1}^\infty A_i \in \mathcal{F}$;
+      \end{enumerate}
+    \item $\mathbb{P}$ is a probabilty measure
+      on $(\Omega, \mathcal{F})$ (to be defined later).
+  \end{itemize}
+\end{definition}
+
+\begin{remark}
+  In general, when $\Omega$ is finite or countably
+  infinite, one takes
+  $\mathcal{F} = \mathcal{P}(\Omega)$.
+\end{remark}
+
+\begin{prop}
+  We always have $\varnothing, \Omega \in \mathcal{F}$.
+\end{prop}
+
+\begin{proof}
+  Since $\mathcal{F} \ne \varnothing$, there
+  exists some event $A \in \mathcal{F}$. Then we get $A^c \in \mathcal{F}$
+  and $\Omega = A \cup A^c \in \mathcal{F}$
+  by the complement and union properties of
+  $\mathcal{F}$. Finally
+  $\varnothing = \Omega^c \in \mathcal{F}$
+  by the complement property.
+\end{proof}
+
+\begin{definition}
+  A \emph{probability measure} on $(\Omega, \mathcal{F})$ is a function
+  $\mathbb{P} : \mathcal{F} \to [0, \infty)$
+  such that
+  \begin{enumerate}[(i)]
+    \item $\mathbb{P}(\Omega) = 1$,
+    \item and $\mathbb{P}(\bigcup_{k = 1}^\infty A_k) = \sum_{k = 1}^\infty \mathbb{P}(A_k)$
+      whenever $A_1, A_2, \dots \in \mathcal{F}$ are pairwise disjoint.\footnote{i.e. $A_i \cap A_j = \varnothing$ whenever $i \ne j$.}
+  \end{enumerate}
+\end{definition}
+
+\begin{prop}
+  The following properties hold for any
+  probability measure $\mathbb{P}$ on
+  $(\Omega, \mathcal{F})$:
+  \begin{enumerate}[(1)]
+    \item For any $A \in \mathcal{F}$,
+      we have $\mathbb{P}(A^c) = 1 - \mathbb{P}(A)$.
+    \item Let $A, B \in \mathcal{F}$ with
+      $A \subseteq B$. Then $\mathbb{P}(A) \le \mathbb{P}(B)$.
+    \item Let $A, B, C \in \mathcal{F}$. Then
+      \[
+        \PP(A \cup B) = \PP(A) + \PP(B) - \PP(A \cap B).
+      \]
+      This is the \emph{principle of inclusion-exclusion}.
+  \end{enumerate}
+\end{prop}
+
+\begin{proof}
+  $(1)$ Observe that $A \cup A^c = \Omega$ and
+  $A \cap A^c = \varnothing$, so
+  $1 = \mathbb{P}(\Omega) = \mathbb{P}(A \cup A^c) = \mathbb{P}(A) + \mathbb{P}(A^c)$.
+
+  $(2)$ Write $B = A \cup (B \setminus A)$.\footnote{Note that $B \setminus A \in \mathcal{F}$ since $B \setminus A = B \cap A^c = (B^c \cup A)^c$.} Since
+  $A \cap (B \setminus A) = \varnothing$,
+  we have $\mathbb{P}(B) = \mathbb{P}(A) + \mathbb{P}(B \setminus A) \ge \mathbb{P}(A)$.\footnote{Since $\mathbb{P} : \mathcal{F} \to [0, \infty)$, we have $\mathbb{P}(B \setminus A) \ge 0$.}
+
+  $(3)$ Left as an exercise. Follow similar ideas
+  as in (2).
+\end{proof}
+
+\begin{remark}
+  Observe that property (2) implies
+  $\mathbb{P}(A) \le \mathbb{P}(\Omega) = 1$
+  since any $A \subseteq \Omega$.
+\end{remark}
+
+\begin{example}
+  Pick a point uniformly at random from the
+  unit square $\Omega = [0, 1] \times [0, 1]$
+  and record its coordinates. Then the probability 
+  of the point being inside a fixed shape
+  $S \subseteq \Omega$ is $|S|$, the area of $S$.
+\end{example}
+
+\begin{remark}
+  Note that $\PP$ only satisfies
+  \emph{countable} additivity. For instance let
+  $\Omega = [0, 1]$ and $\PP$ be the uniform
+  measure on $\Omega$. Then $\Omega = \bigcup_{x \in [0, 1]} \{x\}$
+  and $\PP(\{x\}) = 0$ for every $x \in [0, 1]$,
+    but $\PP(\Omega) = 1$.
+    This is because the union
+    $\bigcup_{x \in [0, 1]} \{x\}$ is uncountable.
+\end{remark}
+
+\begin{definition}
+  Let $\Omega$ be finite and
+  $\mathcal{F} = \mathcal{P}(\Omega)$. The uniform
+  probability on $(\Omega, \mathcal{F})$
+  is the one such that
+  \[
+    \mathbb{P}(\{\omega\}) = \frac{1}{\card \Omega}
+    \quad \text{for all $\omega \in \Omega$.}
+  \]
+\end{definition}
+
+\begin{prop}
+  Let $\PP$ be the uniform probability
+  on a finite set $\Omega$ and let $A \in \mathcal{F}$.
+  Then
+  \[
+    \PP(A) = \frac{\card A}{\card \Omega}.
+  \]
+\end{prop}
+
+\begin{proof}
+  Note that $A$ is finite since $\Omega$ is and
+  so we may enumerate its elements
+  as $A = \{\omega_1, \omega_2, \dots, \omega_n\}$,
+  where $n = \card A$.
+  Then the sets $\{\omega_i\}_{i = 1}^n$ are pairwise disjoint
+  and thus we have
+  \[
+    \PP(A) = \PP\left(\bigcup_{i = 1}^n \{\omega_i\}\right)
+    = \sum_{i = 1}^n \PP(\{\omega_i\})
+    = \sum_{i = 1}^n \frac{1}{\card \Omega}
+    = \frac{n}{\card \Omega}
+    = \frac{\card A}{\card \Omega},
+  \]
+  which is the desired result.
+\end{proof}
+
+\section{Conditional Probability}
+\begin{definition}
+  Let $B \in \mathcal{F}$ such that
+  $\PP(B) > 0$. Then the \emph{conditional probability}
+  of $A$ given $B$, written $\PP(A | B)$, is given by
+  \[
+    \PP(A | B) = \frac{\PP(A \cap B)}{\PP(B)}.
+  \]
+\end{definition}
+
+\begin{remark}
+  The intuition is that the extra information gained by
+  knowing the occurrence of $B$ should update our
+  computation of the probability of $A$.
+\end{remark}
+
+\begin{remark}
+  Another way to think about conditional probability
+  is a restriction of the sample space to $B$.
+\end{remark}
+
+\section{Homework Problems}
+
+Problems \#1, 2, 9, 10, 14 from Grimmett and Welsh.

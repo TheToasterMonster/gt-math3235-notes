@@ -169,6 +169,216 @@
   is a restriction of the sample space to $B$.
 \end{remark}
 
+\begin{example}
+  Suppose a family has two children, one of
+  which is a girl. What is the probability the other
+  is a girl?
+  Define the sample space to be
+  \[
+    \Omega = \{(B, G), (B, B), (G, G), (G, B)\}.
+  \]
+  Note that each elementary event is equally likely,
+  i.e.
+  \[
+    \PP(\{(B, G)\}) = \PP(\{(G, B)\})
+    = \PP(\{(B, B)\}) = \PP(\{(G, G)\}) = \frac{1}{4}.
+  \]
+  Let $A = \{\text{both of them are $G$}\} = \{(G, G)\}$
+  and $B = \{\text{one is a girl}\} = \{(G, B), (B, G), (G, G)\}$.
+  Then
+  \[
+    \PP(A | B) = \frac{\PP(A \cap B)}{\PP(B)}
+    = \frac{\PP(\{(G, G)\})}{\PP(\{(G, B), (B, G), (G, G)\})}
+    = \frac{1/4}{3/4} = \frac{1}{3}.
+  \]
+\end{example}
+
+\begin{remark}
+  If we instead condition on the event that one of
+  them is a girl born on a Monday, then the
+  probability changes! Carry out the calculation,
+  and it should be $3 / 7$ for a
+  $7$-day week.
+\end{remark}
+
+\begin{example}
+  A drug test is 98\% accurate, i.e.
+  a drug user tests positive 98\% of the time
+  and a non-drug user tests negative 98\% of the time.
+  Among a given
+  population, it is known 2\% of people use drugs.
+  Suppose I pick a person at random in the population
+  and this person tests positive. What is the
+  probability that the person is a drug
+  user? Define the events
+  \[
+    A = \text{the person is a drug user}
+    \quad \text{and} \quad
+    B = \text{the person tests positive}.
+  \]
+  Then the goal is to compute $\PP(A | B)$. The
+  98\% accuracy assumption implies that
+  $\PP(B | A) = 0.98$. Now
+  \[
+    \PP(A | B) = \frac{\PP(A \cap B)}{\PP(B)}
+    = \frac{\PP(B | A) \PP(A)}{\PP(B)}.
+  \]
+  Note that $B = (B \cap A) \cup (B \cap A^c)$
+  and this is a disjoint union, so
+  \begin{align*}
+    \PP(B) = \PP(B \cap A) + \PP(B \cap A^c)
+    &= \PP(B | A) \PP(A) \\
+    + \PP(B | A^c) \PP(A^c)
+    &= 0.98(0.02) + 0.02(0.98) = 2(0.98)(0.02).
+  \end{align*}
+  Here we noted that the 98\% accuracy of the test
+  also implies that $\PP(B | A^c) = 0.02$.
+  Thus we get
+  \[
+    \PP(A | B) = \frac{0.98(0.02)}{2(0.98)(0.02)}
+    = \frac{1}{2}.
+  \]
+  Compute as an exercise that $\PP(A^c | B^c) = 0.996$.
+\end{example}
+
+\begin{remark}
+  This test is designed clear non-drug users, not
+  to identify drug users.
+\end{remark}
+
+\section{Bayes' Theorem}
+\begin{definition}
+  A \emph{partition} of $\Omega$ is a collection
+  or sequence of events $\{B_k\}_{k = 1}^\infty$
+  such that
+  \[
+    B_i \cap B_j = \varnothing
+    \text{ for } i \ne j \quad \text{and} \quad
+    \Omega = \bigcup_{k = 1}^\infty B_k.
+  \]
+\end{definition}
+
+\begin{remark}
+  For any event $A$, observe that
+  \[
+    A = A \cap \Omega
+    = A \cap \left(\bigcup_{k = 1}^\infty B_k\right)
+    = \bigcup_{k = 1}^\infty (A \cap B_k).
+  \]
+  Then we get
+  \[
+    \PP(A) = \PP\left(\bigcup_{k = 1}^\infty (A \cap B_k)\right)
+    = \sum_{k = 1}^\infty \PP(A \cap B_k)
+    = \sum_{k = 1}^\infty \PP(A | B_k) \PP(B_k).
+  \]
+  This is the \emph{partition theorem} in the book (Grimmett and Welsh).
+  Now observe that
+  \[
+    \PP(B_i | A) = \frac{\PP(B_i \cap A)}{\PP(A)}
+    = \frac{\PP(B_i \cap A)}{\sum_{k = 1}^\infty \PP(A| B_k)\PP(B_k)}
+    = \frac{\PP(A | B_i) \PP(B_i)}{\sum_{k = 1}^\infty \PP(A| B_k)\PP(B_k)}
+  \]
+  for each $i = 1, 2, \dots$.
+  This is \emph{Bayes' theorem}, which relates
+  posterior probabilities to prior probabilities.
+\end{remark}
+
+\section{Conditional Independence}
+\begin{prop}
+  Let $B$ be such that $\PP(B) > 0$. Then
+  $Q : \mathcal{F} \to [0, 1]$ given by
+  $A \mapsto Q(A) = \PP(A | B)$ is a probability
+  measure.
+\end{prop}
+
+\begin{proof}
+  $(i)$ Observe that
+  \[
+    Q(\Omega) = \PP(\Omega | B)
+    = \frac{\PP(\Omega \cap B)}{\PP(B)}
+    = \frac{\PP(B)}{\PP(B)} = 1.
+  \]
+
+  $(ii)$ Let $\{A_k\}_{k = 1}^\infty \subseteq \mathcal{F}$
+  be pairwise disjoint. Then observe that
+  we have
+  \begin{align*}
+    Q\left(\bigcup_{k = 1}^\infty A_k\right)
+    = \PP\left(\bigcup_{k = 1}^\infty A_k | B\right)
+    &= \frac{\PP\left(\bigcup_{k = 1}^\infty (A_k \cap B)\right)}{\PP(B)} \\
+    &= \frac{\sum_{k = 1}^\infty \PP(A_k \cap B)}{\PP(B)}
+    = \sum_{k = 1}^\infty \PP(A_k | B)
+    = \sum_{k = 1}^\infty Q(A_k).
+  \end{align*}
+  Thus $Q$ is indeed a probability measure.
+\end{proof}
+
+\begin{definition}
+  Two events $A$ and $B$ are called
+  \emph{independent}, written
+  $A {\indep} B$, if
+  $\PP(A \cap B) = \PP(A) \PP(B)$.
+\end{definition}
+
+\begin{example}
+  Let $A, B$ be events with
+  $\PP(A) = 0.6$ and $\PP(B) = 0.8$. Then
+  $0.4 \le \PP(A \cap B) \le 0.6$.
+  This is because $A \cap B \subseteq A$ implies
+  $\PP(A \cap B) \le \PP(A) = 0.6$. Also noting
+  that $A \cap B \subseteq \Omega$ and so
+  $\PP(A \cap B) \le \PP(\Omega) = 1$ implies that
+  \[
+    \PP(A \cap B) = \PP(A) + \PP(B) - \PP(A \cup B)
+    \ge 0.6 + 0.8 - 1 = 0.4.
+  \]
+  Note that if $A$ and $B$ were independent,
+  then we can immediately conclude
+  $\PP(A \cap B) = 0.6(0.8) = 0.48$.
+\end{example}
+
+\begin{prop}
+  Assume $A$ and $B$ are events with
+  $0 < \PP(A), \PP(B) < 1$.
+  The following are equivalent:
+  \begin{enumerate}
+    \item $A$ and $B$ are independent,
+    \item $\PP(A | B) = \PP(A)$,
+    \item $\PP(B | A) = \PP(B)$,
+    \item $\PP(A^c | B) = \PP(A^c)$,
+    \item and $\PP(B^c | A) = \PP(B^c)$.
+  \end{enumerate}
+\end{prop}
+
+\begin{proof}
+  Note that $\PP(A | B) \PP(B) = \PP(A \cap B)$
+  and $A {\indep} B$ if and only if
+  $\PP(A \cap B) = \PP(A) \PP(B)$. Then
+  use cancellation since $\PP(B) \ne 0$. Work
+  out the rest as an exercise.
+\end{proof}
+
+\begin{definition}
+  We say that three events $A, B, C$ are
+  \emph{independent} if $A, B, C$ are pairwise
+  independent\footnote{i.e. $\PP(X \cap Y) = \PP(X)\PP(Y)$ for any $X, Y \in \{A, B, C\}$.}
+  and
+  $\PP(A \cap B \cap C) = \PP(A) \PP(B) \PP(C)$.
+\end{definition}
+
+\begin{remark}
+  Pairwise independence does not imply
+  independence. Consider flipping a fair coin
+  twice. Let
+  \[
+    A = \{\text{first flip is } T\}, \quad
+    B = \{\text{second flip is } H\}, \quad
+    C = \{\text{both flips are the same}\}.
+  \]
+  Then $A, B, C$ are pairwise independent but
+  $\PP(A \cap B \cap C) = 0 \ne \PP(A) \PP(B) \PP(C) = 1 / 8$.
+\end{remark}
+
 \section{Homework Problems}
 
-Problems \#1, 2, 9, 10, 14 from Grimmett and Welsh.
+Problems \#1, 2, 9, 10, 14, 16, 17, 19 from Grimmett and Welsh.

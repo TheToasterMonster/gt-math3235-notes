@@ -379,6 +379,92 @@
   $\PP(A \cap B \cap C) = 0 \ne \PP(A) \PP(B) \PP(C) = 1 / 8$.
 \end{remark}
 
+\section{Continuity of Probability Measures}
+\begin{remark}
+  We want a system of probability that can say
+  if I flip a fair coin infinitely many times,
+  then
+  \[
+    \PP(\text{never get heads}) = 0
+  .\]
+  For this experiment, we can set the sample
+  space to be
+  \begin{align*}
+    \Omega &= \{\text{all sequences like } (H, T, T, \dots)\}.
+  \end{align*}
+  The event space $\mathcal{F}$ is a little
+  complicated, but it includes events like
+  $\{\text{heads on the $n$th throw}\}$ and their
+  complements and countable unions. We would like
+  to show that $\PP(\{(T, T, T, \dots)\}) = 0$.
+  We know that
+  \[
+    \PP(A_n) = \PP(\text{no heads in first $n$ tosses}) = \frac{1}{2^n}.
+  \]
+  As $n \to \infty$, we can see that $2^{-n} \to 0$.
+  If we have
+  $\PP(A_n) \to \PP(\{(T, T, T, \dots)\})$, then
+  we can conclude that
+  \[
+    \PP(\{(T, T, T, \dots)\})
+    = \lim_{n \to \infty} \PP(A_n)
+    = \lim_{n \to \infty} \frac{1}{2^n} = 0.
+  \]
+  Notice that $A_1 \supseteq A_2 \supseteq A_3 \supseteq \dots$
+  and $\bigcap_{n = 1}^\infty A_n = \{(T, T, T, \dots)\}$.
+  For sake of convenience, we will take
+  complements and work with unions: We set
+  \[
+    B_n = A_n^c = \{\text{at least one heads in first $n$ tosses}\},
+  \]
+  then $B_1 \subseteq B_2 \subseteq B_3 \subseteq \dots$
+  and $\bigcup_{n = 1}^\infty B_n = \Omega \setminus \{(T, T, T, \dots)\}$.
+  But this union is not disjoint. To fix this, set
+  $C_i = B_i \setminus B_{i - 1}$, then
+  \[
+    B_1 \cup \bigcup_{n = 2}^\infty C_n = \Omega \setminus \{(T, T, T, \dots)\},
+  \]
+  which is now a disjoint union. Taking probabilities,
+  we can use countable additivity to get
+  \[
+    \PP(B_1 \cup C_2 \cup C_3 \cup \dots)
+    = \PP(B_1) + \PP(C_2) + \PP(C_3) + \dots.
+    \tag{$*$}
+  \]
+  First, note that
+  $B_1 \cup C_2 \cup C_3 \cup \dots = B_1 \cup B_2 \cup B_3 \cup \dots = \Omega \setminus \{(T, T, T, \dots)\}$.
+  Thus in $(*)$, the LHS is $1 - \PP(\{(T, T, T, \dots)\})$.
+  Now observe that in the RHS, we have
+  $\PP(C_i) = \PP(B_i) - \PP(B_{i - 1})$.
+  Then
+  \begin{align*}
+    \PP(B_1) + \PP(C_2) + \PP(C_3) + \dots
+    &= \lim_{n \to \infty} \left[\PP(B_1) + \PP(C_2) + \dots + \PP(B_n)\right] \\
+    &= \lim_{n \to \infty} \left[\PP(B_1) + (\PP(B_2) - \PP(B_1)) + \dots + (\PP(B_n) - \PP(B_{n - 1}))\right] \\
+    &= \lim_{n \to \infty} \PP(B_n)
+    = \lim_{n \to \infty} \left[1 - \PP(A_n)\right]
+    = \lim_{n \to \infty} \left[1 - \frac{1}{2^n}\right]
+    = 1.
+  \end{align*}
+  Thus matching the LHS and RHS, we see that
+  $1 - \PP(\{(T, T, T, \dots)\}) = 1$ and so
+  $\PP(\{(T, T, T, \dots)\}) = 0$.
+\end{remark}
+
+\begin{theorem}[Continuity of probability measures]
+  If $\{B_i\}_{i = 1}^\infty$ are nested events,\footnote{i.e. $B_1 \subseteq B_2 \subseteq B_3 \subseteq \dots$.}
+  then
+  \[
+    \PP\left(\bigcup_{i = 1}^\infty B_i\right)
+    = \lim_{n \to \infty} \PP(B_n).
+  \]
+\end{theorem}
+
+\begin{proof}
+  This was essentially the argument in the previous
+  remark.
+\end{proof}
+
 \section{Homework Problems}
 
 Problems \#1, 2, 9, 10, 14, 16, 17, 19 from Grimmett and Welsh.

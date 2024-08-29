@@ -1,0 +1,186 @@
+\chapter{Discrete Random Variables}
+
+\section{Probability Mass Functions}
+\begin{example}
+  Consider the following game: Flip a fair
+  coin 10 times and roll a fair die. I give you
+  \[
+    (\text{number of heads}) \times (\text{number on die})
+    \text{ dollars}.
+  \]
+  This is a simple game, but it is kind of
+  painful to write in terms of events
+  (e.g. $\PP(\text{win} \ge \$10))$).
+  We would have to set
+  \[
+    \Omega = \{\text{all sequences like } (H, T, H, H, T, T, T, T, T, H, 4)\}
+  \]
+  and $\mathcal{F} = \mathcal{P}(\Omega)$. It is
+  also not immediately obviously which
+  sequences are in $\{\text{win} \ge \$10\}$. Instead,
+  we would prefer something like
+  \begin{quote}
+    ``Let $H$ be the number of heads in 10
+    fair coin tosses and let $R$ be the outcome
+    of a roll of a fair die. Then you get $HR$ dollars.''
+  \end{quote}
+  How do we do this in our axiomatic framework?
+  What are $H, R$? Here are some observations:
+  \begin{itemize}
+    \item $H, R$ are real numbers,
+    \item and they are determined by the outcome of the
+      experiment.
+  \end{itemize}
+  Thus we should think of $H, R$ as functions
+  from $\Omega$ to $\R$. These are examples of
+  \emph{discrete random variables}.
+\end{example}
+
+\begin{remark}
+  The name ``random variable'' is just
+  historic. Really, $H, R$ are non-random functions.
+\end{remark}
+
+\begin{remark}
+  Can every function $X : \Omega \to \R$
+  be a discrete random variable? Note that we want to
+  talk about probabilities like
+  $\PP(X = 17)$. This indicates that the event
+  \[
+    \{X = 17\} = \{\omega \in \Omega : X(\omega) = 17\}
+  \]
+  has to be in $\mathcal{F}$. So we require that
+  $X$ is \emph{measurable}, i.e. for
+  every $x \in \R$, we have
+  $\{x \in \Omega : X(\omega) = x\} \in \mathcal{F}$.
+  Also $H, R$ must have special properties,
+  for instance they can only take on finitely many
+  values.
+\end{remark}
+
+\begin{definition}
+  A function $X : \Omega \to \R$ is a
+  \emph{discrete random variable} if
+  \begin{enumerate}[(i)]
+    \item for every $x \in \R$, we have
+      $\{X = x\} \in \mathcal{F}$,
+    \item and $X(\Omega) = \{x \in \R : x = X(\omega) \text{ for some } \omega\}$
+      is finite or countably infinite.
+  \end{enumerate}
+\end{definition}
+
+\begin{remark}
+  Often, we only care about what values $X$
+  can take and with what probabilities. We store this
+  data in a special function called the
+  \emph{probability mass function}.
+\end{remark}
+
+\begin{definition}
+  Let $X$ be a discrete random variable. Then
+  its \emph{probability mass function (pmf)} is
+  \[
+    p_X : \R \to [0, 1] \quad \text{defined by} \quad p_X(s) = \PP(X = s).
+  \]
+\end{definition}
+
+\begin{example}
+  Let $X$ be the outcome of the roll of a fair die.
+  Then
+  \[
+    p_X(s) = \begin{cases}
+      1/6 & \text{if } s \in \{1, 2, 3, 4, 5, 6\}, \\
+      0 & \text{otherwise}.
+    \end{cases}
+  \]
+\end{example}
+
+\begin{remark}
+  Another sentence we want to say is:
+  \begin{quote}
+    ``A discrete random variable $X$ takes
+    values $\{1, 7, 9\}$ with probabilities
+    $1 / 2, 1 / 3, 1 / 6$, respectively if and only
+    if
+    \[
+      p_X(s) =
+      \begin{cases}
+        1 / 2 & \text{if } s = 1, \\
+        1 / 3 & \text{if } s = 7, \\
+        1 / 6 & \text{if } s = 9, \\
+        0 & \text{otherwise}.
+      \end{cases}
+    \]
+  \end{quote}
+  How do we know this exists? In other words,
+  does there exist
+  $(\Omega, \mathcal{F}, \PP)$ and
+  $X : \Omega \to \R$ with this pmf?
+\end{remark}
+
+\begin{theorem}
+  Let $S = \{s_i : i \in I\}$ be a countable
+  subset of $\R$ and let
+  $\{\pi_i : i \in I\}$ be a collection of
+  numbers such that $\pi_i \ge 0$ and
+  \[
+    \sum_{i \in I} \pi_i = 1.
+  \]
+  Then there exists a probability space
+  $(\Omega, \mathcal{F}, \PP)$ and a discrete
+  random variable $X : \Omega \to \R$ such that
+  \[
+    p_X(s) =
+    \begin{cases}
+      \pi_i & \text{if } s = s_i, \\
+      0 & \text{otherwise}.
+    \end{cases}
+  \]
+\end{theorem}
+
+\begin{proof}
+  Take $\Omega = S$ and
+  $\mathcal{F} = \mathcal{P}(S)$. Set
+  \[\PP(A) = \sum_{i : s_i \in A} \pi_i\]
+  and define $X : \Omega \to \R$ given by
+  $X(\omega) = \omega$. Then one can check
+  that $X$ has the desired pmf.
+\end{proof}
+
+\begin{remark}
+  This allows us to just say
+  \begin{quote}
+    ``Let $X$ be a discrete random variable taking
+    these values with these probabilities''
+  \end{quote}
+  without worrying about the underlying
+  $(\Omega, \mathcal{F}, \PP)$.
+\end{remark}
+
+\begin{example}
+  Some common examples of discrete random variables
+  are:
+  \begin{enumerate}
+    \item Bernoulli random variables:
+      For $p \in [0, 1]$, we say that
+      $X \sim \text{Bernoulli}(p)$ if
+      \[
+        X =
+        \begin{cases}
+          1 & \text{with probability } p, \\
+          0 & \text{with probability } q = 1 - p.
+        \end{cases}
+      \]
+      This models a possibly unfair
+      coin flip. The Bernoulli random variable $X$
+      has pmf
+      \[
+        p_X(s) =
+        \begin{cases}
+          p & \text{if } s = 1, \\
+          1 - p & \text{if } s = 0, \\
+          0 & \text{otherwise}.
+        \end{cases}
+      \]
+  \end{enumerate}
+\end{example}

@@ -161,9 +161,12 @@
   Some common examples of discrete random variables
   are:
   \begin{enumerate}
-    \item Bernoulli random variables:
-      For $p \in [0, 1]$, we say that
-      $X \sim \text{Bernoulli}(p)$ if
+    \item \emph{Constant random variables}:
+      Define $X : \Omega \to \R$ by
+      $\omega \mapsto X(\omega) = C$.
+    \item \emph{Bernoulli random variables}:
+      For $0 < p < 1$, we say that
+      $X \sim \mathrm{Ber}(p)$ if
       \[
         X =
         \begin{cases}
@@ -182,5 +185,138 @@
           0 & \text{otherwise}.
         \end{cases}
       \]
+    \item \emph{Binomial random variables}:
+      For $n \in \N^* = \N \setminus \{0\}$ and $0 < p < 1$, we say that
+      $X \sim \mathrm{Bin}(n, p)$ if
+      \[
+        \PP(X = k) = \binom{n}{k} p^k (1 - p)^{n - k}
+      \]
+      for $k = 0, 1, \dots, n$ and $\PP(X = k) = 0$
+      otherwise. To that this is indeed a pmf,
+      observe that
+      \[
+        \sum_{k = 0}^n \PP(X = k) = \sum_{k = 0}^n \binom{n}{k} p^k (1 - p)^{n - k} = (p + (1 - p))^n = 1^n = 1.
+      \]
+      The $n = 1$ case reduces to a Bernoulli
+      random variable.
+    \item \emph{Geometric random variables}:
+      For $0 < p < 1$, we say that
+      $X \sim \mathrm{Geo}(p)$ if
+      \[
+        \PP(X = k) = p(1 - p)^{k - 1}
+      \]
+      for $k = 1, 2, 3, \dots$ and
+      $\PP(X = k) = 0$ otherwise. The above function
+      is clearly nonnegative and
+      \[
+        \sum_{k = 1}^\infty p(1 - p)^{k - 1}
+        = \frac{p}{1 - (1 - p)} = 1,
+      \]
+      so this is indeed a pmf. The geometric
+      random variable models the
+      number of independent Bernoulli trials needed
+      to obtain the first success.
   \end{enumerate}
 \end{example}
+
+\begin{example}
+  Consider the random variable $X$ which counts
+  the number of independent Bernoulli trials
+  needed to get the 4th success. Note that the
+  range of $X$ is $\{4, 5, 6, \dots\}$. Then
+  \[
+    \PP(X = k) = \binom{k - 1}{3} p^3(1 - p)^{k - 4} p
+    = \binom{k - 1}{3} p^4 (1 - p)^{k - 4}
+  \]
+  for $k = 4, 5, 6, \dots$ and $\PP(X = k) = 0$
+  otherwise.
+  This is because
+  the last trial must be a success and the
+  previous $k - 1$ trials need to contain $3$
+  successes. Here $X = \mathrm{NBin}(n = 4, p)$,
+  the \emph{negative binomial random variable}. In general,
+  $X \sim \mathrm{NBin}(n, p)$ takes on values
+  $n, n + 1, n + 2, \dots$ and
+  \[
+    \PP(X = k) = \binom{k - 1}{n - 1} p^n (1 - p)^{k - n}
+  \]
+  for $k = n, n + 1, n + 2, \dots$. Note that
+  the $n = 1$
+  case reduces to a geometric random variable.
+  The name
+  comes from the binomial theorem with negative
+  exponents.
+\end{example}
+
+\begin{example}
+  We say that $X$ is a \emph{Poisson random variable}
+  with parameter $\lambda > 0$, written
+  $X \sim \mathrm{Poi}(\lambda)$, if $X$ takes the
+  values $k = 0, 1, 2, \dots$ with probability mass
+  function
+  \[
+    p_X(k) = \PP(X = k) = \frac{e^{-\lambda} \lambda^k}{k!}.
+  \]
+  Note that $p_X$ is clearly nonnegative and
+  \[
+    \sum_{k = 0}^\infty p_X(k) = \sum_{k = 0}^\infty \frac{e^{-\lambda} \lambda^k}{k!}
+    = e^{-\lambda} \sum_{k = 0}^\infty \frac{\lambda^k}{k!}
+    = e^{-\lambda} e^\lambda = 1,
+  \]
+  so $p_X$ is indeed a pmf. One can view the
+  Poisson random variable in the following manner:
+  Suppose $X \sim \mathrm{Bin}(n, p)$ with
+  $n \gg 1$ and $p \ll 1$, e.g. $n = 10^5$ and
+  $p = 10^{-4}$. Then
+  \[
+    \PP(X = 100) =
+    \binom{10^5}{100} \left(\frac{1}{10^4}\right)^{100}
+    \left(1 - \frac{1}{10^4}\right)^{10^5 - 100}.
+  \]
+  This is very difficult to compute.
+  Instead, we approximate this via the Poisson
+  random variable.
+\end{example}
+
+\begin{prop}
+  Let $n \to \infty$ and $p = p(n) \to 0$ in such
+  a way that $np(n) \to \lambda > 0$ as $n \to \infty$.
+  Then
+  \[
+    \binom{n}{k} p^k (1 - p)^{n - k} \xrightarrow[n \to \infty]{} \frac{e^{-\lambda} \lambda^k}{k!},
+  \]
+  i.e. $p_X(k) \to p_Y(k)$ pointwise for
+  $k = 0, 1, 2, \dots$, where $X \sim \mathrm{Bin}(n, p)$
+  and $Y \sim \mathrm{Poi}(\lambda)$.
+\end{prop}
+
+\begin{proof}
+  Observe that
+  \begin{align*}
+    \binom{n}{k} p^k (1 - p)^{n - k}
+    &= \frac{n!}{k!(n - k)!} p^k (1 - p)^{n - k}
+    = \frac{1}{k!} \left[n(n - 1) \dots (n - k + 1)p^k(1 - p)^{-k} (1 - p)^n\right] \\
+    &= \frac{1}{k!} \left[\frac{n(n - 1) \dots (n - k + 1)}{n^k} n^k p^k (1 - p)^{-k} (1 - p)^n\right].
+  \end{align*}
+  Now notice that $n^k p^k = (np)^k \to \lambda^k$
+  since $np \to \lambda$, and
+  \[
+    \lim_{n \to \infty} \frac{n(n - 1) \dots (n - k + 1)}{n^k} = 1
+    \quad \text{and} \quad
+    \lim_{p \to 0} (1 - p)^{-k} = 1.
+  \]
+  Finally, setting $\lambda = np$,
+  \[
+    (1 - p)^n =
+    \left(1 - \frac{\lambda}{n}\right)^n
+    \to e^{-\lambda}.
+  \]
+  Putting all of this together, we see that
+  \[
+    \binom{n}{k} p^k (1 - p)^{n - k} \xrightarrow[n \to \infty]{} \frac{e^{-\lambda} \lambda^k}{k!},
+  \]
+  which is the desired result.
+\end{proof}
+
+\section{Homework Problems}
+Problems \#1, 2, 4, 5, 6, 7, 9, 10 from Grimmett and Welsh.

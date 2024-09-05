@@ -157,6 +157,7 @@
   $(\Omega, \mathcal{F}, \PP)$.
 \end{remark}
 
+\section{Common Discrete Random Variables}
 \begin{example}
   Some common examples of discrete random variables
   are:
@@ -317,6 +318,181 @@
   \]
   which is the desired result.
 \end{proof}
+
+\section{Expectation of Random Variables}
+\begin{remark}
+  Suppose $X : \Omega \to \R$ is a discrete random variable and
+  $h : \R \to \R$. Then we have:
+  \[
+    \begin{tikzcd}
+      \Omega \ar[r, "X"] \ar[dr, "h(X)", swap] & \R \ar[d, "h"] \\
+      & \R
+    \end{tikzcd}
+  \]
+  In particular, $h \circ X : \Omega \to \R$ is
+  also a random variable.
+\end{remark}
+
+\begin{definition}
+  Let $X$ be a discrete random variable. The
+  \emph{(mathematical) expectation} of $X$ is\footnote{We write $\mathcal{R}(X)$ to denote the range of $X$.}
+  \[
+    \EE[X] = \sum_{x \in \mathcal{R}(X)} x p_X(x)
+  \]
+  if the above sum exists and converges
+  absolutely,\footnote{i.e. $\sum_{x \in \mathcal{R}(X)} |x| p_X(x) < \infty$.}
+  where
+  $p_X$ is the probability mass function of $X$.
+\end{definition}
+
+\begin{remark}
+  When $X$ is discrete, the expectation coincides
+  with the usual notion of a mean. In general,
+  the expectation is some kind of weighted mean.
+\end{remark}
+
+\begin{remark}
+  Observe that the sum in the definition of
+  $\EE[X]$ need not converge. Even worse, if it
+  only converges conditionally, then by the Riemann
+  rearrangement theorem we may get any real value
+  we wish by reordering the sum. This is why we
+  require absolute convergence.
+\end{remark}
+
+\begin{example}
+  Set $Y = X^2$. Then we have
+  \[
+    \EE[X^2] = \EE[Y] = \sum_{y \in \mathcal{R}(Y)} y \PP(Y = y)
+    = \sum_{y \in \mathcal{R}(X^2)} y \PP(X^2 = y).
+  \]
+  If we explicitly let
+  \[
+    X =
+    \begin{cases}
+      1 & \text{with probability } 1 / 2, \\
+      -1 & \text{with probability } 1 / 2,
+    \end{cases}
+  \]
+  we see that $\EE[X] = 0$. We can also see that
+  $\EE[X^2] = 1$ since $X^2 = 1$ with probability $1$.
+  Equivalently, we can compute that
+  \[
+    \EE[X^2]
+    = \sum_{y \in \mathcal{R}(X^2)} y \PP(X^2 = y)
+    = 1 \cdot \PP(X^2 = 1) = 1.
+  \]
+\end{example}
+
+\begin{prop}[Law of the unconcious statistician]
+  For any $h : \R \to \R$ and $X : \Omega \to \R$
+  discrete,
+  \[
+    \EE[h(X)] = \sum_{x \in \mathcal{R}(X)} h(x) p_X(x)
+  \]
+  where $p_X$ is the pmf of $X$, provided
+  these sums exist and converge absolutely.
+\end{prop}
+
+\begin{proof}
+  Let $Y = h(X)$. Then we have
+  \[
+    \EE[h(X)] = \EE[Y]
+    = \sum_{y \in \mathcal{R}(Y)} y p_Y(y)
+    = \sum_{y \in \mathcal{R}(Y)} y \PP(h(X) = y)
+    = \sum_{x \in \mathcal{R}(X)} h(x) \PP(h(X) = y).
+  \]
+  Note that that $y$ in the last term is
+  $h(x)$, and thus $\PP(h(X) = y) = \PP(h(X) = h(x)) = p_X(x)$.
+  Then
+  \[
+    \EE[h(X)] = \sum_{x \in \mathcal{R}(X)} h(x) p_X(x),
+  \]
+  which is precisely the desired result.
+\end{proof}
+
+\begin{remark}
+  In the discrete case, we do not require
+  that $h$ be measurable
+  since $\mathcal{R}(X)$ is at most countable.
+\end{remark}
+
+\begin{prop}
+  We have the following properties of expectation:
+  \begin{enumerate}[(i)]
+    \item If $X \ge 0$, then $\EE[X] \ge 0$.
+    \item If $X = C$ is constant, then
+      $\EE[X] = C$.
+    \item If $\EE[aX + bY] = a\EE[X] + b\EE[Y]$.
+  \end{enumerate}
+\end{prop}
+
+\begin{proof}
+  $(i)$ Since $X \ge 0$, we have $\mathcal{R} \subseteq [0, \infty)$
+  and thus
+  \[
+    \EE[X] = \sum_{x \in \mathcal{R}(X)} x p_X(x) \ge 0
+  \]
+  since every term in the sum is nonnegative.
+
+  $(ii)$ Since $\mathcal{R}(X) = \{C\}$, we have
+  $\PP(X = C) = 1$ and thus
+  \[
+    \EE[X] = \sum_{x \in \mathcal{R}(X)} x p_X(x)
+    = C \cdot \PP(X = C) = C.
+  \]
+  This is the desired result.
+
+  $(iii)$ We compute that
+  \begin{align*}
+    \EE[aX + bY]
+    &= \sum_{ax + by \in \mathcal{R}(aX + bY)} (ax + by) p_{aX + bY}(ax + by)
+    = \sum_{x \in \mathcal{R}(X)} ax p_{X}(x)
+    + \sum_{y \in \mathcal{R}(Y)} by p_{Y}(y) \\
+    &= a \sum_{x \in \mathcal{R}(X)} x p_{X}(x)
+    + b \sum_{y \in \mathcal{R}(Y)} y p_{Y}(y)
+    = a\EE[X] + b\EE[Y],
+  \end{align*}
+  which is the desired equality.
+\end{proof}
+
+\begin{example} We compute the following:
+  \begin{enumerate}
+    \item Let $X \sim \mathrm{Ber}(p)$. Then
+      $\EE[X] = 0(1 - p) + 1p = p$.
+    \item Let $X \sim \mathrm{Bin}(n, p)$. Then
+      \begin{align*}
+        \EE[X]
+        &= \sum_{k = 0}^n k \binom{n}{k} p^k (1 - p)^{n - k}
+        = \sum_{k = 1}^n k \binom{n}{k} p^k (1 - p)^{n - k}
+        = \sum_{k = 1}^n k \frac{n!}{k!(n - k)!} p^k (1 - p)^{n - k} \\
+        &= \sum_{k = 1}^n \frac{n!}{(k - 1)!(n - k)!} p^k (1 - p)^{n - k}
+        = n \sum_{k = 1}^n \frac{(n - 1)!}{(k - 1)!(n - k)!} p^k (1 - p)^{n - k} \\
+        &= n \sum_{k = 1}^n \binom{n - 1}{k - 1} p^k (1 - p)^{n - k}
+        = np \sum_{k = 1}^n \binom{n - 1}{k - 1} p^{k - 1} (1 - p)^{n - 1 - (k - 1)} = np.
+      \end{align*}
+      In the last step we re-index with $j = k - 1$,
+      and then recognize the terms as the pmf
+      of a $\mathrm{Bin}(n - 1, p)$ random variable,
+      which must sum to $1$ over $0 \le j \le n - 1$.
+    \item Let $X \sim \mathrm{Geo}(p)$. Then
+      \begin{align*}
+        \EE[X]
+        &= \sum_{k = 1}^\infty k p(1 - p)^{k - 1}
+        = p \sum_{k = 1}^\infty k(1 - p)^{k - 1}
+        = p \sum_{k = 1}^\infty \frac{d}{dx}\left. (1 - x)^k\right|_{x = p}
+        = p \frac{d}{dx} \left.\sum_{k = 1}^\infty (1 - x)^k\right|_{x = p} \\
+        &= p \frac{d}{dx} \left.\frac{1 - x}{1 - (1 - x)}\right|_{x = p}
+        = p \frac{d}{dx} \left.\frac{1 - x}{x}\right|_{x = p}
+        = p \frac{d}{dx} \left.\left(1 - \frac{1}{x}\right)\right|_{x = p}
+        = p \cdot \frac{1}{p^2} = p.
+      \end{align*}
+      The exchange of the sum and derivative is
+      justified since $0 < p < 1$, so we are in the
+      region of uniform convergence of the power
+      series.
+  \end{enumerate}
+\end{example}
 
 \section{Homework Problems}
 Problems \#1, 2, 4, 5, 6, 7, 9, 10 from Grimmett and Welsh.

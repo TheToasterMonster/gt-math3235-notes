@@ -428,7 +428,7 @@
 \end{prop}
 
 \begin{proof}
-  $(i)$ Since $X \ge 0$, we have $\mathcal{R} \subseteq [0, \infty)$
+  $(i)$ Since $X \ge 0$, we have $\mathcal{R}(X) \subseteq [0, \infty)$
   and thus
   \[
     \EE[X] = \sum_{x \in \mathcal{R}(X)} x p_X(x) \ge 0
@@ -492,6 +492,242 @@
       region of uniform convergence of the power
       series.
   \end{enumerate}
+\end{example}
+
+\section{Moments}
+Recall that by the law of the unconscious statistician,
+we have $\EE[X^2] = \sum_{x \in \mathcal{R}(X)} x^2 p_X(x)$.
+More generally,
+\[
+  \EE[X^k] = \sum_{x \in \mathcal{R}(X)} x^k p_X(x)
+\]
+for $k \ge 1$, provided this series converges
+absolutely.
+
+\begin{definition}
+  For a random variable $X$,
+  \begin{itemize}
+    \item $\EE[X^k]$ is called the \emph{moment of order $k$} of $X$,
+    \item $\EE[|X|^k]$ is called the \emph{absolute moment of order $k$} of $X$,
+    \item $\EE[(X - \EE[X])^k]$ is called the \emph{centered moment of order $k$} of $X$.
+    \item and $\EE[|X - \EE[X]|^k]$ is called the \emph{centered absolute moment of order $k$} of $X$.
+  \end{itemize}
+\end{definition}
+
+\section{Variance}
+\begin{definition}
+  Let $X$ be a random variable with finite
+  $2$nd moment, i.e. we have $\EE[X^2] < \infty$. Then
+  the \emph{variance} of $X$ is given by
+  \[
+    \Var[X] = \EE[(X - \EE[X])^2].
+  \]
+\end{definition}
+
+\begin{example}
+  Define the random variables $X = 0$,
+  \[
+    Y =
+    \begin{cases}
+      1 & \text{with probability } 1 / 2, \\
+      -1 & \text{with probability } 1 / 2,
+    \end{cases}
+    \quad \text{and} \quad
+    Z =
+    \begin{cases}
+      10 & \text{with probability } 1 / 2, \\
+      -10 & \text{with probability } 1 / 2.
+    \end{cases}
+  \]
+  Then $\EE[X] = \EE[Y] = \EE[Z] = 0$. But observe
+  that we have
+  \begin{align*}
+    \Var[X] &= \EE[(X - \EE[X])^2] = \EE[X^2] = 0, \\
+    \Var[Y] &= \EE[(Y - \EE[Y])^2] = \EE[Y^2] = 1, \\
+    \Var[Z] &= \EE[(Z - \EE[Z])^2] = \EE[Z^2] = 100,
+  \end{align*}
+  which are not the same.
+\end{example}
+
+\begin{remark}
+  The variance is a measure of the spread of a
+  random variable about its mean.
+\end{remark}
+
+\begin{definition}
+  The positive square root of $\Var[X]$ is
+  called the \emph{standard deviation} of $X$.
+\end{definition}
+
+\begin{prop}
+  We have the following properties of variance:
+  \begin{enumerate}[(i)]
+    \item $\Var[\alpha X] = \alpha^2 \Var[X]$
+      for all $\alpha \in \R$,
+    \item $\Var[X] = \EE[X^2] - (\EE[X])^2$,
+    \item $\Var[X] = \EE[X(X - 1)] + \EE[X] - (\EE[X])^2$,
+    \item and $\Var[X] = 0$ if and only if
+      $X$ is constant.
+  \end{enumerate}
+\end{prop}
+
+\begin{proof}
+  $(i)$ We can compute that
+  \[
+    \Var[\alpha X] = \EE[(\alpha X - \EE[\alpha X])^2]
+    = \EE[\alpha^2 (X - \EE[X])^2]
+    = \alpha^2 \EE[(X - \EE[X])^2]
+    = \alpha^2 \Var[X],
+  \]
+  by the linearity of expectation.
+
+  $(ii)$ Again by the linearity of expectation, we have
+  \begin{align*}
+    \Var[X] = \EE[(X - \EE[X])^2]
+    &= \EE[X^2 - 2X\EE[X] + (\EE[X])^2] \\
+    &= \EE[X^2] - 2\EE[X \EE[X]] + \EE[(\EE[X])^2] \\
+    &= \EE[X^2] - 2\EE[X] \EE[X] + (\EE[X])^2
+  \end{align*}
+  since $\EE[X]$ and $(\EE[X])^2$ are constants.
+
+  $(iii)$ Simply write
+  $\EE[X(X - 1)] = \EE[X^2 - X] = \EE[X^2] - \EE[X]$
+  and apply $(ii)$.
+
+  $(iv)$ $(\Leftarrow)$ If $X$ is constant, then
+  $X = \EE[X]$, so
+  \[
+    \Var[X] = \EE[(X - \EE[X])^2] = \EE[(\EE[X] - \EE[X])^2]
+    = \EE[0] = 0.
+  \]
+    $(\Rightarrow)$ Suppose $\Var[X] = 0$. Then we find that
+    \[
+      0 = \Var[X]
+      = \sum_{x \in \mathcal{R}(X)} (x - \EE[X])^2 p_X(x).
+    \]
+    This is a sum of nonnegative terms, so
+    each term must be zero, i.e. $(x - \EE[X])^2 p_X(x) = 0$.
+    Since $x \in \mathcal{R}(X)$, we must have
+    $p_X(x) > 0$, and thus $(x - \EE[X])^2 = 0$.
+    This gives $x = \EE[X]$ for every $x \in \mathcal{R}(X)$,
+    so we conclude that $X = \EE[X]$ must be constant.
+\end{proof}
+
+\begin{exercise}
+  Compute the variance for the following random
+  variables:
+  \begin{enumerate}[(i)]
+    \item $X \sim \mathrm{Ber}(p)$.
+      The answer should be $\Var[X] = p(1 - p)$.
+    \item $X \sim \mathrm{Bin}(n, p)$.
+      The answer should be $\Var[X] = np(1 - p)$.
+    \item $X \sim \mathrm{Poi}(\lambda)$.
+      The answer should be $\Var[X] = \lambda$.
+    \item $X \sim \mathrm{Geo}(p)$.
+      We know $\EE[X] = 1 / p$, what is $\Var[X]$?
+    \item $X \sim \mathrm{NBin}(r, p)$.
+      We know $\EE[X] = r / p$, what is
+      $\Var[X]$?
+  \end{enumerate}
+\end{exercise}
+
+\section{Conditional Expectation}
+\begin{definition}
+  Let $X$ be a random variable and let
+  $B$ be an event such that $\PP(B) > 0$.
+  Then the \emph{conditional expectation} of $X$ given
+  $B$ is defined by
+  \[
+    \EE[X | B]
+    = \sum_{x \in \mathcal{R}(X)} x \PP(X = x | B)
+    = \sum_{x \in \mathcal{R}(X)} \frac{x \PP(\{X = x\} \cap B)}{\PP(B)}.
+  \]
+\end{definition}
+
+\begin{remark}
+  Recall that $\{B_i\}_{i = 1}^\infty$ is
+  a partition of $\Omega$ if the $B_i$
+  are pairwise disjoint events and
+  $\Omega = \bigcup_{i = 1}^\infty B_i$.
+\end{remark}
+
+\begin{theorem}[Partition theorem in expectation]
+  Let $X$ be a discrete random variable and
+  $\{B_k\}_{k = 1}^\infty$ be a partition of
+  $\Omega$ with $\PP(B_k) > 0$ for each $k \ge 1$.
+  Then
+  \[
+    \EE[X] = \sum_{k = 1}^\infty \EE[X | B_k] \PP(B_k).
+  \]
+\end{theorem}
+
+\begin{proof}
+  Use the definition of conditional expectation to
+  write
+  \begin{align*}
+    \sum_{k = 1}^\infty \EE[X | B_k] \PP(B_k)
+    = \sum_{k = 1}^\infty \sum_{x \in \mathcal{R}(X)} x \PP(X = x | B_k) \PP(B_k)
+    &= \sum_{x \in \mathcal{R}(X)} x \sum_{k = 1}^\infty  \PP(X = x | B_k) \PP(B_k) \\
+    &=  \sum_{x \in \mathcal{R}(X)} x \PP(X = x)
+    = \EE[X]
+  \end{align*}
+  by the usual partition theorem. Exchanging
+  the sums is permissible by absolute convergence
+  of $\EE[X]$.
+\end{proof}
+
+\begin{remark}
+  One can see this as saying
+  ``the expectation of the conditional expectation
+  is the expectation.''
+\end{remark}
+
+\begin{example}
+  Suppose a coin flips heads with probability $p$
+  and tails with probability $1 - p$. What is the
+  expected length of the initial run (of consecutive
+  heads if
+  the first flip is heads, or of consecutive
+  tails if the first flip is tails)? Let $X$ be the
+  length of the initial run and $H$ be the event that
+  the first flip is heads. Then
+  \[
+    \PP(X = k | H) = p^{k - 1}(1 - p)
+    \quad \text{for $k = 1, 2, \dots$.}
+  \]
+  Similarly we find
+  \[
+    \PP(X = k | H^c) = (1 - p)^{k - 1}p
+    \quad \text{for $k = 1, 2, \dots$.}
+  \]
+  Since $\{H, H^c\}$ is a partition of $\Omega$,
+  we can use the partition theorem in expectation
+  to write
+  \[
+    \EE[X] = \EE[X | H] \PP(H) + \EE[X | H^c] \PP(H^c). \tag{$*$}
+  \]
+  We can compute that
+  \[
+    \EE[X | H] = \sum_{x \in \mathcal{R}(X)} x \PP(X = x | H)
+    = \sum_{k = 1}^\infty k p^{k - 1}(1 - p)
+    = (1 - p) \sum_{k = 1}^\infty k p^{k - 1}
+    = \frac{1 - p}{(1 - p)^2} = \frac{1}{1 - p}.
+  \]
+  Similarly we can find
+  \[
+    \EE[X | H^c] = \sum_{x \in \mathcal{R}(X)} x \PP(X = x | H^c)
+    = \sum_{k = 1}^\infty k (1 - p)^{k - 1}p
+    = p \sum_{k = 1}^\infty k (1 - p)^{k - 1}
+    = \frac{p}{p^2} = \frac{1}{p}.
+  \]
+  Thus by substituting these values into $(*)$ we
+  obtain
+  \[
+    \EE[X] = \frac{1}{1 - p} \cdot p + \frac{1}{p} \cdot (1 - p)
+    = \frac{1}{p(1 - p)} - 2.
+  \]
+  In particular, if $p = 1 / 2$, then we find that
+  $\EE[X] = 2$.
 \end{example}
 
 \section{Homework Problems}

@@ -351,6 +351,181 @@
   $\EE[h_1(X)h_2(Y)] = \EE[h_1(X)] \EE[h_2(Y)]$.
 \end{proof}
 
+\section{Convolution and Random Variables}
+
+\begin{definition}
+  The \emph{convolution} of two pmfs
+  $p_X, p_Y$ is given by
+  \[
+    (p_X * p_Y)(z)
+    = \sum_{x \in \mathcal{R}(X)} p_X(x) p_Y(z - x)
+    = \sum_{y \in \mathcal{R}(Y)} p_X(z - y) p_Y(y).
+  \]
+\end{definition}
+
+\begin{prop}
+  Let $X$ and $Y$ be two independent discrete
+  random variables with pmfs $p_X$ and $p_Y$, respectively.
+  Then $X + Y$ is discrete and has pmf given by
+  the convolution $p_X * p_Y$.
+\end{prop}
+
+\begin{proof}
+  It is clear that $X + Y$ is discrete, so it suffices
+  to find its pmf.
+  Let $X$ take the values $x \in \mathcal{R}(X)$ and
+  $Y$ take the values $y \in \mathcal{R}(Y)$.
+  Let $Z = X + Y$ take the values
+  $z \in \mathcal{R}(X + Y)$. Then we find that
+  \[
+    p_Z(z) = \PP(Z = z)
+    = \PP(X + Y = z)
+    = \PP\left(
+      \bigcup_{x \in \mathcal{R}(X)} (\{X = x\} \cap \{Y = z - x\})
+    \right).
+  \]
+  These events are pairwise disjoint, so we have
+  \begin{align*}
+    p_Z(z)
+    &= \sum_{x \in \mathcal{R}(X)} \PP(\{X = x\} \cap \{Y = z - x\}) \\
+    &= \sum_{x \in \mathcal{R}(X)} \PP(X = x) \PP(Y = z - x)
+    = \sum_{x \in \mathcal{R}(X)} p_X(x) p_Y(z - x)
+  \end{align*}
+  by independence. This is precisely the
+  convolution of $p_X$ and $p_Y$.
+\end{proof}
+
+\begin{prop}
+  Let $X_1, \dots, X_n$ be $n$ independent discrete
+  random variables with pmfs $p_{X_1}, \dots, p_{X_n}$. Then
+  $X_1 + \dots + X_n$ is discrete and has pmf
+  $p_{X_1} * p_{X_2} * \dots * p_{X_{n - 1}} * p_{X_n}$.
+\end{prop}
+
+\begin{proof}
+  This follows from induction using the previous
+  result and convolution being
+  associative.\footnote{To see that convolution is associative, one can note that the sum of random variables is associative.}
+\end{proof}
+
+\begin{example}
+  Let $X \sim \mathrm{Ber}(p)$ and $Y \sim \mathrm{Ber}(p)$,
+  and let $X$ and $Y$ be independent. The pmf of
+  $X + Y$ is the convolution of the pmfs of $X$ and $Y$.
+  Now $X + Y$ takes the values $z = 0, 1, 2$, and
+  \[
+    p_{X + Y}(z) = \sum_{x \in \mathcal{R}(X)} p_X(x) p_Y(z - x).
+  \]
+  For $z = 0$, we have
+  \[
+    p_{X + Y}(0) = \sum_{x = 0}^1 p_X(x) p_Y(-x)
+    = p_X(0) p_Y(0) + p_X(1) p_Y(-1)
+    = (1 - p)(1 - p) + 0 = (1 - p)^2
+  \]
+  since $p_Y(-1) = 0$. For $z = 1$, we have
+  \[
+    p_{X + Y}(1) = \sum_{x = 0}^1 p_X(x) p_Y(1 - x)
+    = p_X(0) p_Y(1) + p_X(1) p_Y(0)
+    = (1 - p)p + p(1 - p) = 2p(1 - p).
+  \]
+  Finally, when $z = 2$, we see that
+  \[
+    p_{X + Y}(2) = \sum_{x = 0}^1 p_X(x) p_Y(2 - x)
+    = p_X(0) p_Y(2) + p_X(1) p_Y(1)
+    = 0 + p(p) = p^2
+  \]
+  since $p_Y(2) = 0$. In particular, this shows us
+  that $X + Y \sim \mathrm{Bin}(2, p)$. Induct
+  to get the general case.
+\end{example}
+
+\section{Indicator Functions}
+
+\begin{definition}
+  The \emph{indicator function} of a set $A$ is
+  \[
+    \mathbbm{1}_A(x) = \begin{cases}
+      1 & \text{if } x \in A, \\
+      0 & \text{if } x \notin A.
+    \end{cases}
+  \]
+\end{definition}
+
+\begin{remark}
+  We have the following properties of indicator functions:
+  \begin{enumerate}[(i)]
+    \item $\mathbbm{1}_{A \cap B} = \mathbbm{1}_A \mathbbm{1}_B$. To see this, we can write
+      \[
+        (\mathbbm{1}_A \mathbbm{1}_B)(x) =
+        \mathbbm{1}_A(x) \mathbbm{1}_B(x)
+        = \begin{cases}
+          1 & \text{if } x \in A \text{ and } x \in B, \\
+          0 & \text{otherwise}.
+        \end{cases}
+      \]
+    \item $\mathbbm{1}_{A} + \mathbbm{1}_{A^c} = 1$.
+    \item $\mathbbm{1}_{A \cup B} = 1 - \mathbbm{1}_{A^c \cap B^c}$.
+    \item $\mathbbm{1}_{A \Delta B} = \mathbbm{1}_{A} + \mathbbm{1}_B \pmod{2}$.
+      Here $A \Delta B = (A \setminus B) \cup (B \setminus A)$
+      is the \emph{symmetric difference}
+      of $A$ and $B$.
+  \end{enumerate}
+\end{remark}
+
+\begin{remark}
+  Observe that $\mathbbm{1}_A$ is a function
+  $\mathbbm{1}_A : \Omega \to \R$. In particular,
+  if $A$ is an event, then
+  $\mathbbm{1}_A$ is a random variable and
+  \[
+    \EE[\mathbbm{1}_A]
+    = 0 \cdot \PP(\mathbbm{1}_A = 0) + 1 \cdot \PP(\mathbbm{1}_A = 1)
+    = \PP(\mathbbm{1}_A = 1)
+    = \PP(A).
+  \]
+  Using this, we can take expectations on
+  property $(ii)$ above to get
+  \[
+    \EE[\mathbbm{1}_A + \mathbbm{1}_{A^c}]
+    = \EE[\mathbbm{1}_A] + \EE[\mathbbm{1}_{A^c}
+    = \PP(A) + \PP(A^c) = 1.
+  \]
+  Now observe that property $(iii)$ says that
+  \begin{align*}
+    \mathbbm{1}_{A \cup B}
+    &= 1 - \mathbbm{1}_{A^c \cap B^c}
+    = 1 - \mathbbm{1}_{A^c} \mathbbm{1}_{B^c}
+    = 1 - (1 - \mathbbm{1}_A)(1 - \mathbbm{1}_B) \\
+    &= 1 - (1 - \mathbbm{1}_A - \mathbbm{1}_B + \mathbbm{1}_A \mathbbm{1}_B)
+    = \mathbbm{1}_A + \mathbbm{1}_B - \mathbbm{1}_A \mathbbm{1}_B.
+  \end{align*}
+  From here taking expectations gives
+  \begin{align*}
+    \PP(A \cup B)
+    &= \EE[\mathbbm{1}_{A \cup B}]
+    = \EE[\mathbbm{1}_A + \mathbbm{1}_B - \mathbbm{1}_A \mathbbm{1}_B] \\
+    &= \EE[\mathbbm{1}_A] + \EE[\mathbbm{1}_B] - \EE[\mathbbm{1}_A \mathbbm{1}_B]
+    = \PP(A) + \PP(B) - \PP(A \cap B).
+  \end{align*}
+  More generally, let $A_1, \dots, A_n$ be arbitrary
+  events with indicators
+  $\mathbbm{1}_{A_1}, \dots, \mathbbm{1}_{A_n}$.
+  Let $A = \bigcup_{i = 1}^n A_i$. Then
+  \begin{align*}
+    \mathbbm{1}_{A}
+    &= \mathbbm{1}_{\bigcup_{i = 1}^n A_i}
+    = 1 - \mathbbm{1}_{\bigcap_{i = 1}^n A_i^c}
+    = 1 - \prod_{i = 1}^n \mathbbm{1}_{A_i^c}
+    = 1 - \prod_{i = 1}^n (1 - \mathbbm{1}_{A_i}) \\
+    &= \sum_{i = 1}^n \mathbbm{1}_{A_i}
+    - \sum_{1 \le i < j \le n} \mathbbm{1}_{A_i} \mathbbm{1}_{A_j}
+    + \sum_{1 \le i < j < k \le n} \mathbbm{1}_{A_i} \mathbbm{1}_{A_j} \mathbbm{1}_{A_k}
+    - \dots + (-1)^{n + 1} \mathbbm{1}_{A_1} \dots \mathbbm{1}_{A_n}.
+  \end{align*}
+  At this point, taking expectations precisely
+  recovers the general inclusion-exclusion formula.
+\end{remark}
+
 \section{Homework Problems}
 Problems \#2, 3, 5, 7, 12, 13, 14 from
 Grimmett and Welsh.

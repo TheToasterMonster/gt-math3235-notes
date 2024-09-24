@@ -1,0 +1,198 @@
+\chapter{Probability Generating Functions}
+
+\section{Probability Generating Functions}
+
+The probability generating function is a concept
+for discrete random variables, and more precisely
+for those $X$ taking values in
+$\{0, 1, 2, \dots\}$. Such
+random variables have a pmfs $p_X(k) = p_k = \PP(X = k)$
+for $k = 0, 1, 2, \dots$. Then
+$\{p_k\}_{k \ge 0} \subseteq \R$ is a sequence
+such that $p_k \ge 0$ for
+each $k$ and $\sum_{k = 0}^\infty p_k = 1$.
+
+\begin{definition}
+  Let $X$ be a discrete random variable taking
+  values in $\{0, 1, 2, \dots\}$ with pmf given
+  by $\PP(X = k) = p_k$ for $k = 0, 1, 2, \dots$.
+  Then the \emph{probability generating function (pgf)}
+  of $X$ is given by
+  \[
+    \mathcal{G}_X(s) = p_0 + p_1s + p_2s^2 + \dots
+    = \EE[s^X],
+  \]
+  for the values of $s$ for which
+  $\EE[|s^X|] = \sum_{k = 0}^\infty p_k |s|^k < \infty$.
+\end{definition}
+
+\begin{prop}
+  The series $\mathcal{G}_X(s) = \sum_{k = 0}^\infty p_k s^k$ converges
+  absolutely for $s \in \R$ where $|s| \le 1$.
+\end{prop}
+
+\begin{proof}
+  Observe that $\mathcal{G}_X(s) = \EE[s^X]$
+  and for $|s| \le 1$,
+  \[
+    \EE[|s^X|]
+    = \sum_{k = 0}^\infty p_k |s|^k
+    \le \sum_{k = 0}^\infty p_k
+    = 1
+  \]
+  since $p_k = p_X(k)$ is a pmf. Thus the
+  interval of convergence is guaranteed to contain
+  $[-1, 1]$.
+\end{proof}
+
+\begin{example}
+  Consider the following probability generating
+  functions:
+  \begin{itemize}
+    \item Let $X \sim \mathrm{Ber}(p)$. Then
+      \[
+        \mathcal{G}_X(s) = s^0 \PP(X = 0)
+        + s^1 \PP(X = 1)
+        = 1(1 - p) + ps = 1 - p + ps.
+      \]
+      This exists for all $s \in \R$.
+    \item Let $X \sim \mathrm{Bin}(n, p)$. Then
+      \[
+        \mathcal{G}_X(s) = \sum_{k = 0}^n s^k \binom{n}{k} p^k (1 - p)^{n - k}
+        = \sum_{k = 0}^n \binom{n}{k} (ps)^k (1 - p)^{n - k}
+        = (1 - p + ps)^n.
+      \]
+      This again exists for all $x \in \R$.
+    \item Let $X \sim \mathrm{Geo}(p)$. Then
+      \[
+        \mathcal{G}_X(s)
+        = \sum_{k = 1}^\infty p(1 - p)^{k - 1} s^k
+        = ps \sum_{k = 1}^\infty (1 - p)^{k - 1} s^{k - 1}
+        = ps \sum_{k = 0}^\infty ((1 - p) s)^k.
+      \]
+      When $|(1 - p) s| < 1$, we get
+      \[
+        \mathcal{G}_X(s)
+        = \frac{ps}{1 - (1 - p)s}
+      \]
+      Thus $\mathcal{G}_X$ exists
+      for $|s| < 1 / (1 - p)$.
+    \item Let $X \sim \mathrm{Poi}(\lambda)$.
+      Then
+      \[
+        \mathcal{G}_X(s)
+        = \sum_{k = 0}^\infty \frac{e^{-\lambda} \lambda^k}{k!} s^k
+        = e^{-\lambda} \sum_{k = 0}^\infty \frac{(\lambda s)^k}{k!}
+        = e^{-\lambda} e^{\lambda s}
+        = e^{\lambda(s - 1)}.
+      \]
+      This series converges for all $s \in \R$.
+  \end{itemize}
+\end{example}
+
+\section{Applications of PGFs}
+\begin{theorem}
+  Let $X$ and $Y$ have probability generating
+  functions
+  $\mathcal{G}_X$ and $\mathcal{G}_Y$, respectively.
+  Then
+  \[\mathcal{G}_X(s) = \mathcal{G}_Y(s)
+    \quad \text{for all $s$ in their interval of convergence} 
+  \]
+  if and only if $\PP(X = k) = \PP(Y = k)$ for
+  all $k = 0, 1, 2, \dots$.
+\end{theorem}
+
+\begin{proof}
+  $(\Leftarrow)$ If $\PP(X = k) = \PP(Y = k)$ for
+  each $k$, then
+  \[
+    \mathcal{G}_X(s)
+    = \sum_{k = 0}^\infty \PP(X = k) s^k
+    = \sum_{k = 0}^\infty \PP(Y = k) s^k
+    = \mathcal{G}_Y(s).
+  \]
+  This holds for every $s$ for which the above series
+  converge.
+
+  $(\Rightarrow)$ Assume that
+  $\mathcal{G}_X(s) = \mathcal{G}_Y(s)$ for all
+  $|s| \le 1$. First observe that
+  plugging in $s = 0$ in $\mathcal{G}_X(s)$
+  and $\mathcal{G}_Y(s)$ immediately
+  gives $\PP(X = 0) = \PP(Y = 0)$. Then
+  because we have absolute convergence
+  for $|s| \le 1$ and thus uniform convergence
+  on $|s| \le 1$, we can differentiate
+  term by term to get
+  \[
+    \frac{d}{ds} \mathcal{G}_X(s)
+    = \frac{d}{ds} \sum_{k = 0}^\infty \PP(X = k) s^k
+    = \sum_{k = 0}^\infty \frac{d}{ds} \left[\PP(X = k) s^k\right]
+    = \sum_{k = 0}^\infty \PP(X = k) k s^{k - 1}
+  \]
+  and
+  \[
+    \frac{d}{ds} \mathcal{G}_Y(s)
+    = \frac{d}{ds} \sum_{k = 0}^\infty \PP(Y = k) s^k.
+    = \sum_{k = 0}^\infty \frac{d}{ds} \left[\PP(Y = k) s^k\right]
+    = \sum_{k = 0}^\infty \PP(Y = k) k s^{k - 1}.
+  \]
+  These are equal since $\mathcal{G}_X(s) = \mathcal{G}_Y(s)$, so
+  we can again evaluate at $s = 0$ to get
+  \[
+    1 \cdot \PP(X = 1) = 1 \cdot \PP(Y = 1),
+  \]
+  i.e. $\PP(X = 1) = \PP(Y = 1)$. Continue
+  by induction to get $k! \cdot \PP(X = k) = k! \cdot \PP(Y = k)$
+  for every $k \ge 1$, so $\PP(X = k) = \PP(Y = k)$
+  for each $k$. This is the desired result.
+\end{proof}
+
+\begin{theorem}
+  Let $X$ be an integer-valued random variable
+  with pgf $\mathcal{G}_X$. Then for every
+  $\ell \ge 1$,
+  \[
+    \left.\frac{d^\ell}{ds^\ell} \mathcal{G}_X(s)\right|_{s = 1}
+      = \EE[X(X - 1) \dots (X - \ell + 1)]
+  \]
+\end{theorem}
+
+\begin{proof}
+  As before,
+  \[
+    \frac{d^\ell}{ds^\ell} \mathcal{G}_X(s)
+    = \sum_{k = 0}^\infty k(k - 1) \dots (k - \ell + 1)
+    \PP(X = k) s^{k - \ell}
+  \]
+  for all $|s| \le 1$. Evaluating at $s = 1$ gives
+  \[
+    \frac{d^\ell}{ds^\ell} \mathcal{G}_X(s)
+    = \sum_{k = \ell}^\infty k(k - 1) \dots (k - \ell + 1) \PP(X = k)
+    = \EE[X(X - 1) \dots (X - \ell + 1)],
+  \]
+  as desired. In particular, this expectation
+  is finite if and only if the series on the
+  left converges.
+\end{proof}
+
+\begin{remark}
+  Recall from before that
+  $\Var[X] = \EE[X(X - 1)] + \EE[X] - (\EE[X])^2$.
+  We can compute this via
+  \[
+    \Var[X] = \mathcal{G}_X''(1) + \mathcal{G}_X'(1) - (\mathcal{G}_X'(1))^2
+  \]
+  using the probability generating function if
+  $X$ is integer-valued.
+\end{remark}
+
+\begin{remark}
+  The value $\EE[X(X - 1) \dots (X - \ell + 1)]$
+  is called the \emph{factorial moment of order $\ell$} of $X$.
+\end{remark}
+
+\section{Homework Problems}
+Problems \#2, 5, 6, 8, 9, 10, 11 from Grimmett and
+Welsh.

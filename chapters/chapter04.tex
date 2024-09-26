@@ -19,7 +19,7 @@ each $k$ and $\sum_{k = 0}^\infty p_k = 1$.
   Then the \emph{probability generating function (pgf)}
   of $X$ is given by
   \[
-    \mathcal{G}_X(s) = p_0 + p_1s + p_2s^2 + \dots
+    G_X(s) = p_0 + p_1s + p_2s^2 + \dots
     = \EE[s^X],
   \]
   for the values of $s$ for which
@@ -27,12 +27,12 @@ each $k$ and $\sum_{k = 0}^\infty p_k = 1$.
 \end{definition}
 
 \begin{prop}
-  The series $\mathcal{G}_X(s) = \sum_{k = 0}^\infty p_k s^k$ converges
+  The series $G_X(s) = \sum_{k = 0}^\infty p_k s^k$ converges
   absolutely for $s \in \R$ where $|s| \le 1$.
 \end{prop}
 
 \begin{proof}
-  Observe that $\mathcal{G}_X(s) = \EE[s^X]$
+  Observe that $G_X(s) = \EE[s^X]$
   and for $|s| \le 1$,
   \[
     \EE[|s^X|]
@@ -51,36 +51,36 @@ each $k$ and $\sum_{k = 0}^\infty p_k = 1$.
   \begin{itemize}
     \item Let $X \sim \mathrm{Ber}(p)$. Then
       \[
-        \mathcal{G}_X(s) = s^0 \PP(X = 0)
+        G_X(s) = s^0 \PP(X = 0)
         + s^1 \PP(X = 1)
         = 1(1 - p) + ps = 1 - p + ps.
       \]
       This exists for all $s \in \R$.
     \item Let $X \sim \mathrm{Bin}(n, p)$. Then
       \[
-        \mathcal{G}_X(s) = \sum_{k = 0}^n s^k \binom{n}{k} p^k (1 - p)^{n - k}
+        G_X(s) = \sum_{k = 0}^n s^k \binom{n}{k} p^k (1 - p)^{n - k}
         = \sum_{k = 0}^n \binom{n}{k} (ps)^k (1 - p)^{n - k}
         = (1 - p + ps)^n.
       \]
       This again exists for all $x \in \R$.
     \item Let $X \sim \mathrm{Geo}(p)$. Then
       \[
-        \mathcal{G}_X(s)
+        G_X(s)
         = \sum_{k = 1}^\infty p(1 - p)^{k - 1} s^k
         = ps \sum_{k = 1}^\infty (1 - p)^{k - 1} s^{k - 1}
         = ps \sum_{k = 0}^\infty ((1 - p) s)^k.
       \]
       When $|(1 - p) s| < 1$, we get
       \[
-        \mathcal{G}_X(s)
+        G_X(s)
         = \frac{ps}{1 - (1 - p)s}
       \]
-      Thus $\mathcal{G}_X$ exists
+      Thus $G_X$ exists
       for $|s| < 1 / (1 - p)$.
     \item Let $X \sim \mathrm{Poi}(\lambda)$.
       Then
       \[
-        \mathcal{G}_X(s)
+        G_X(s)
         = \sum_{k = 0}^\infty \frac{e^{-\lambda} \lambda^k}{k!} s^k
         = e^{-\lambda} \sum_{k = 0}^\infty \frac{(\lambda s)^k}{k!}
         = e^{-\lambda} e^{\lambda s}
@@ -90,13 +90,13 @@ each $k$ and $\sum_{k = 0}^\infty p_k = 1$.
   \end{itemize}
 \end{example}
 
-\section{Applications of PGFs}
+\section{Properties of PGFs}
 \begin{theorem}
   Let $X$ and $Y$ have probability generating
   functions
-  $\mathcal{G}_X$ and $\mathcal{G}_Y$, respectively.
+  $G_X$ and $G_Y$, respectively.
   Then
-  \[\mathcal{G}_X(s) = \mathcal{G}_Y(s)
+  \[G_X(s) = G_Y(s)
     \quad \text{for all $s$ in their interval of convergence} 
   \]
   if and only if $\PP(X = k) = \PP(Y = k)$ for
@@ -107,38 +107,38 @@ each $k$ and $\sum_{k = 0}^\infty p_k = 1$.
   $(\Leftarrow)$ If $\PP(X = k) = \PP(Y = k)$ for
   each $k$, then
   \[
-    \mathcal{G}_X(s)
+    G_X(s)
     = \sum_{k = 0}^\infty \PP(X = k) s^k
     = \sum_{k = 0}^\infty \PP(Y = k) s^k
-    = \mathcal{G}_Y(s).
+    = G_Y(s).
   \]
   This holds for every $s$ for which the above series
   converge.
 
   $(\Rightarrow)$ Assume that
-  $\mathcal{G}_X(s) = \mathcal{G}_Y(s)$ for all
+  $G_X(s) = G_Y(s)$ for all
   $|s| \le 1$. First observe that
-  plugging in $s = 0$ in $\mathcal{G}_X(s)$
-  and $\mathcal{G}_Y(s)$ immediately
+  plugging in $s = 0$ in $G_X(s)$
+  and $G_Y(s)$ immediately
   gives $\PP(X = 0) = \PP(Y = 0)$. Then
   because we have absolute convergence
   for $|s| \le 1$ and thus uniform convergence
   on $|s| \le 1$, we can differentiate
   term by term to get
   \[
-    \frac{d}{ds} \mathcal{G}_X(s)
+    \frac{d}{ds} G_X(s)
     = \frac{d}{ds} \sum_{k = 0}^\infty \PP(X = k) s^k
     = \sum_{k = 0}^\infty \frac{d}{ds} \left[\PP(X = k) s^k\right]
     = \sum_{k = 0}^\infty \PP(X = k) k s^{k - 1}
   \]
   and
   \[
-    \frac{d}{ds} \mathcal{G}_Y(s)
+    \frac{d}{ds} G_Y(s)
     = \frac{d}{ds} \sum_{k = 0}^\infty \PP(Y = k) s^k.
     = \sum_{k = 0}^\infty \frac{d}{ds} \left[\PP(Y = k) s^k\right]
     = \sum_{k = 0}^\infty \PP(Y = k) k s^{k - 1}.
   \]
-  These are equal since $\mathcal{G}_X(s) = \mathcal{G}_Y(s)$, so
+  These are equal since $G_X(s) = G_Y(s)$, so
   we can again evaluate at $s = 0$ to get
   \[
     1 \cdot \PP(X = 1) = 1 \cdot \PP(Y = 1),
@@ -151,10 +151,10 @@ each $k$ and $\sum_{k = 0}^\infty p_k = 1$.
 
 \begin{theorem}
   Let $X$ be an integer-valued random variable
-  with pgf $\mathcal{G}_X$. Then for every
+  with pgf $G_X$. Then for every
   $\ell \ge 1$,
   \[
-    \left.\frac{d^\ell}{ds^\ell} \mathcal{G}_X(s)\right|_{s = 1}
+    \left.\frac{d^\ell}{ds^\ell} G_X(s)\right|_{s = 1}
       = \EE[X(X - 1) \dots (X - \ell + 1)]
   \]
 \end{theorem}
@@ -162,13 +162,13 @@ each $k$ and $\sum_{k = 0}^\infty p_k = 1$.
 \begin{proof}
   As before,
   \[
-    \frac{d^\ell}{ds^\ell} \mathcal{G}_X(s)
+    \frac{d^\ell}{ds^\ell} G_X(s)
     = \sum_{k = 0}^\infty k(k - 1) \dots (k - \ell + 1)
     \PP(X = k) s^{k - \ell}
   \]
   for all $|s| \le 1$. Evaluating at $s = 1$ gives
   \[
-    \frac{d^\ell}{ds^\ell} \mathcal{G}_X(s)
+    \frac{d^\ell}{ds^\ell} G_X(s)
     = \sum_{k = \ell}^\infty k(k - 1) \dots (k - \ell + 1) \PP(X = k)
     = \EE[X(X - 1) \dots (X - \ell + 1)],
   \]
@@ -182,7 +182,7 @@ each $k$ and $\sum_{k = 0}^\infty p_k = 1$.
   $\Var[X] = \EE[X(X - 1)] + \EE[X] - (\EE[X])^2$.
   We can compute this via
   \[
-    \Var[X] = \mathcal{G}_X''(1) + \mathcal{G}_X'(1) - (\mathcal{G}_X'(1))^2
+    \Var[X] = G_X''(1) + G_X'(1) - (G_X'(1))^2
   \]
   using the probability generating function if
   $X$ is integer-valued.
@@ -192,6 +192,146 @@ each $k$ and $\sum_{k = 0}^\infty p_k = 1$.
   The value $\EE[X(X - 1) \dots (X - \ell + 1)]$
   is called the \emph{factorial moment of order $\ell$} of $X$.
 \end{remark}
+
+\begin{theorem}
+  Let $X, Y$ be independent random variables.
+  Then $G_{X + Y}(s) = G_X(s) G_Y(s)$ for all $|s| \le 1$.
+\end{theorem}
+
+\begin{proof}
+  We have $G_{X + Y}(s) = \EE[s^{X + Y}] = \EE[s^X s^Y] = \EE[s^X] \EE[s^Y] = G_X(s) G_Y(s)$
+  by independence.
+\end{proof}
+
+\begin{remark}
+  Another way to show this is to use the
+  convolution formula for the pmf of $X + Y$.
+\end{remark}
+
+\begin{corollary}
+  For independent random variables $X_1, \dots, X_n$,
+  we have
+  \[
+    G_{X_1 + \dots + X_n}(s)
+    = \prod_{k = 1}^n G_{X_k}(s)
+  \]
+\end{corollary}
+
+\begin{remark}
+  We actually also have the converse:
+  If $G_{X + Y}(s) = G_X(s) G_Y(s)$ for all
+  $|s| \le 1$, then $X$ and $Y$ are independent.
+  One can show this using the convolution
+  formula.
+\end{remark}
+
+\section{The Random Sum Formula}
+Let $S = X_1 + \dots + X_N$, where $X_1, X_2, \dots$
+are independent random variables and $N$ is
+an integer-valued random variable independent
+of the $X_i$. If
+$N = 0$, then the sum is empty and by convention
+we say that $X_1 + \dots + X_N = 0$. If $N \ge 1$,
+then we define
+\[
+  (X_1 + \dots + X_N)(\omega)
+  = X_1(\omega) + X_2(\omega) + \dots + X_{N(\omega)}(\omega).
+\]
+
+\begin{theorem}[Random sum formula]
+  For integer-valued independent random variables $N, X_1, X_2, \dots$,
+  \[
+    G_{X_1 + \dots + X_N}(s) = G_N(G_{X}(s)),
+  \]
+  given that $X_1, X_2, \dots$ are
+  identically distributed with $p_X = p_{X_1} = p_{X_2} = \dots$.
+\end{theorem}
+
+\begin{proof}
+  Since the events $\{N = n\}$ partition
+  the sample space $\Omega$,
+  by the partition theorem we can write
+  \begin{align*}
+    G_{X_1 + \dots + X_N}(s)
+    = \EE[s^{X_1 + \dots + X_N}]
+    &= \sum_{n = 0}^\infty \EE[s^{X_1 + \dots + X_N} | N = n] \PP(N = n) \\
+    &= \sum_{n = 0}^\infty \EE[s^{X_1 + \dots + X_n}] \PP(N = n).
+  \end{align*}
+  Now by independence of the $X_i$, we can
+  split the expectation and get
+  \[
+    G_{X_1 + \dots + X_N}(s)
+    = \sum_{n = 0}^\infty G_{X_1}(s) \dots G_{X_n}(s) \PP(N = n)
+    = \sum_{n = 0}^\infty (G_X(s)^n) \PP(N = n)
+  \]
+  since the $X_i$ are identically distributed.
+  Now the value on the right is precisely
+  $G_N(G_X(s))$.
+\end{proof}
+
+\begin{remark}
+  We will use ``i.i.d.'' to denote
+  ``independent and identically distributed''.
+\end{remark}
+
+\begin{remark}
+  Set $S = X_1 + \dots + X_N$, so that
+  $G_S(s) = G_N(G_X(s))$. Now differentiating
+  $G_S(s)$ gives
+  \[
+    G_S'(s) = G_N'(G_X(s)) G_X'(s).
+  \]
+  At $s = 1$, we get
+  $G_S'(1) = G_N'(G_X(1)) G_X'(1) = G_N'(1) G_X'(1)$.
+  But $G_Y'(1) = \EE[Y]$, so this says that
+  \[
+    \EE[S] = \EE[N] \EE[X]
+  \]
+  One can continue this process. For instance,
+  differentiating again yields
+  \[
+    G_S''(s)
+    = \frac{d}{ds} \left[G_N'(G_X(s)) G_X'(s)\right]
+    = G_N''(G_X(s)) G_X'(s) G_X'(s) + G_N'(G_X(s)) G_X''(s).
+  \]
+  Evaluating at $s = 1$, we obtain
+  \begin{align*}
+    \EE[S(S - 1)]
+    = G_S''(1)
+    &= G_N''(1) (G_X'(1))^2 + G_N'(1) G_X''(1) \\
+    &= \EE[N(N - 1)] (\EE[X])^2 + \EE[N] \EE[X(X - 1)].
+  \end{align*}
+  This allows us to find $\Var[S]$ with some more
+  work.
+\end{remark}
+
+\begin{example}
+  Suppose that we have $20$ rabbits, and each
+  has probability $1 / 2$ of escaping. The next
+  morning, each remaining rabbit gives birth
+  to a number of offspring following a Poisson
+  distribution with parameter $\lambda = 3$,
+  and we want to determine the pgf of the number
+  of offspring. To do this, let $N$ be the number
+  of rabbits not escaping, and observe that
+  $N \sim \mathrm{Bin}(20, 1 / 2)$. Then
+  \[
+    G_S(s) = G_{X_1 + \dots + X_N}(s)
+    = G_N(G_X(s))
+  \]
+  by the random sum formula, where
+  $X \sim \mathrm{Poi}(3)$. Then
+  \[
+    G_N(s) = \left(\frac{1}{2} + \frac{1}{2}s\right)^{20} \quad \text{and} \quad
+    G_X(s) = e^{3(s - 1)},
+  \]
+  so we find that
+  \[
+    G_S(s) = G_N(G_X(s))
+    = \left(\frac{1}{2} + \frac{1}{2} e^{3(s - 1)}\right)^{20}.
+  \]
+  In particular, $\EE[S] = \EE[N] \EE[X] = 3(1 / 2) = 3 / 2$.
+\end{example}
 
 \section{Homework Problems}
 Problems \#2, 5, 6, 8, 9, 10, 11 from Grimmett and

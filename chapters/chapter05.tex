@@ -1,0 +1,177 @@
+\chapter{Continuous Random Variables}
+
+\section{Distribution Functions}
+\begin{remark}
+  When $X$ is discrete, we have the pmf
+  $p_X(x) = \PP(X = x)$ for $x \in \R$. Note that
+  $p_X(x) > 0$ for only countably many $x$, and
+  outside of $\mathcal{R}(X)$ we ``set $p_X(x) = 0$''
+  (really $p_X$ is only defined on $\mathcal{R}(X)$).
+  We will now study the situation where we
+  have $p_X(x) = 0$ everywhere.
+\end{remark}
+
+\begin{definition}
+  Let $X$ be a random variable. Then the
+  \emph{(cumulative) distribution function (cdf)}
+  of $X$ is
+  \[
+    F_X(x) = \PP(X \le x) \quad \text{for } x \in \R.
+  \]
+\end{definition}
+
+\begin{remark}
+  Note that we can write
+  \[
+    \PP(X \le x)
+    = \PP(\{\omega \in \Omega : X(\omega) \le x\})
+    = \PP(\{\omega \in \Omega : X(\omega) \in (-\infty, x]\})
+    = \PP(X^{-1}((-\infty, x])).
+  \]
+  This hints that $X^{-1}((-\infty, x])$ must be in
+  the event space $\F$.
+\end{remark}
+
+\begin{example}
+  Suppose that $X$ is discrete. Then
+  \[
+    F_X(x) = \sum_{y \in \mathcal{R}(X), y \le x} \PP(X = y).
+  \]
+  If $X \sim \mathrm{Ber}(p)$, then
+  \[
+    F_X(x) = \PP(X \le x) =
+    \begin{cases}
+      0 & \text{if $x < 0$} \\
+      1 - p & \text{if $0 \le x < 1$} \\
+      1 & \text{if $x \ge 1$}.
+    \end{cases}
+  \]
+\end{example}
+
+\begin{prop}
+  Let $X$ be a random variable with distribution
+  function $F_X$. Then
+  \begin{enumerate}[(i)]
+    \item $F_X$ is a function $F_X : \R \to [0, 1]$,
+    \item $F_X$ is non-decreasing, i.e.
+      if $x \le y$, then $F_X(x) \le F_X(y)$,
+    \item $\lim_{x \to \infty} F_X(x) = 1$ and
+      $\lim_{x \to -\infty} F_X(x) = 0$,
+    \item $F_X$ is continuous from the right, i.e.
+      $\lim_{y \to x^+} F_X(Y) = F_X(x)$ for every
+      $x \in \R$,
+    \item $F_X$ has a left-hand limit at
+      every $x \in \R$, i.e.
+      $F_X(x^-) = \lim_{y \to x^-} F_X(y)$ exists.
+    \item $\PP(X = x) = F_X(x) - F_X(x^-)$,
+    \item and $\PP(X \in [a, b]) = F_X(b) - F_X(a^-)$.
+  \end{enumerate}
+\end{prop}
+
+\begin{proof}
+  $(i)$ Under $F$, we have $x \mapsto F(x) = \PP(X \le x) \in [0, 1]$.
+
+  $(ii)$ Observe that
+  $\{X \le x\} \subseteq \{X \le y\}$ if $x \le y$,
+  so $F_X(x) = \PP(X \le x) \le \PP(X \le y) = F_X(y)$.
+
+  $(iii)$ Fix any increasing
+  sequence $\{a_n\}$ with $a_n \to \infty$. Then
+  $\{X \le a_n\}$ is an increasing sequence of
+  events and $\bigcup_{n = 1}^\infty \{X \le a_n\} = \Omega$
+  since $a_n \to \infty$. Thus by the continuity
+  from below of probability measures,
+  \[
+    \lim_{n \to \infty} F_X(a_n)
+    = \lim_{n \to \infty} \PP(X \le a_n)
+    = \PP\left(\bigcup_{n = 1}^\infty \{X \le a_n\}\right)
+    = \PP(\Omega)
+    = 1
+  \]
+  Since this holds for any increasing
+  sequence $\{a_n\}$, we have
+  $\lim_{x \to \infty} F_X(x) = 1$. We immediately
+  obtain $\lim_{x \to -\infty} F_X(x) = 0$ as well
+  by taking complements in the above argument.
+
+  $(iv)$ Take sequences again. Note that
+  $\bigcap_{n = 1}^\infty \{X \le a_n\} = \{X \le y\}$
+  if $\{a_n\}$ is decreasing and $a_n \to y$.
+
+  $(v)$ We informally write
+  \begin{align*}
+    F_X(x^-)
+    = \lim_{y \to x^-} F_X(y)
+    = \lim_{y \to x^-} \PP(X \le y)
+    &= \lim_{y \to x^-} \PP(X \in (-\infty, y]) \\
+    &= \PP(X \in (-\infty, x))
+    = \PP(X < x).
+  \end{align*}
+  To justify this, one can take sequences and
+  argue as before.
+
+  $(vi)$ This is because
+  $F_X(x) - F_X(x^-) = \PP(X \le x) - \PP(X < x) = \PP(X = x)$.
+
+  $(vii)$ Write
+  $\PP(X \in [a, b]) = \PP(X \le b) - \PP(X < a) = F_X(b) - F_X(a^-)$.
+\end{proof}
+
+\begin{remark}
+  Observe that we also have
+  \[
+    \PP(a < X \le b)
+    = \PP(X \in (a, b]))
+    = \PP(X \le b) - \PP(X \le a)
+    = F_X(b) - F_X(a).
+  \]
+  We get analogous results for the probability
+  of $X$ being in any interval.
+\end{remark}
+
+\section{Continuous Random Variables}
+\begin{definition}
+  A random variable $X$ is
+  \emph{continuous} if its distribution function
+  $F_X$ is continuous.
+\end{definition}
+
+\begin{definition}
+  A random variable $X$ is \emph{absolutely continuous}
+  if $F_X$ is absolutely continuous, i.e.
+  \[
+    F_X(x) = \int_{-\infty}^x f_X(t) \, dt
+  \]
+  for some function $f_X : \R \to \R$ such that
+  $f_X(x) \ge 0$ for all $x \in \R$ and
+  \[\int_{-\infty}^\infty f_X(x) \, dx = 1\]
+  In this case, $f_X$ is called a
+  \emph{(probability) density function (pdf)} of $X$.
+\end{definition}
+
+\begin{remark}
+  Note that density functions of $X$ may differ
+  on a set of measure zero, e.g. at a point.
+\end{remark}
+
+\begin{remark}
+  If $X$ is discrete, then $F_X$ is
+  \emph{not} continuous, and thus certainly
+  not absolutely continuous.
+\end{remark}
+
+\begin{remark}
+  If $X$ is absolutely continuous with pdf
+  $f_X$, then
+  \[
+    \PP(X \in (a, b]) = \int_a^b f_X(x) \, dx.
+  \]
+  In particular, this says that for all $x \in \R$,
+  we must have
+  \[
+    \int_{\{x\}} f_X(t) \, dt = 0.
+  \]
+\end{remark}
+
+\section{Homework Problems}
+Problems \#1, 2, 3, 4, 7, 9, 10, 14 from Grimmett and Welsh.

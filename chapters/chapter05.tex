@@ -37,15 +37,50 @@
   \[
     F_X(x) = \sum_{y \in \mathcal{R}(X), y \le x} \PP(X = y).
   \]
-  If $X \sim \mathrm{Ber}(p)$, then
-  \[
-    F_X(x) = \PP(X \le x) =
-    \begin{cases}
-      0 & \text{if $x < 0$} \\
-      1 - p & \text{if $0 \le x < 1$} \\
-      1 & \text{if $x \ge 1$}.
-    \end{cases}
-  \]
+  \begin{itemize}
+    \item If $X \sim \mathrm{Ber}(p)$, then
+      \[
+        F_X(x) = \PP(X \le x) =
+        \begin{cases}
+          0 & \text{if $x < 0$} \\
+          1 - p & \text{if $0 \le x < 1$} \\
+          1 & \text{if $x \ge 1$}.
+        \end{cases}
+      \]
+    \item If $X \sim \mathrm{Bin}(n, p)$, then
+      \[
+        F_X(x) =
+        \begin{cases}
+          0 & \text{if $x < 0$} \\
+          \sum_{\ell = 0}^{k - 1} \binom{n}{\ell} p^\ell (1 - p)^{n - \ell} & \text{if $k - 1 \le x < k$, for $k = 1, 2, \dots, n$,} \\
+          1 & \text{if $x \ge n$}.
+        \end{cases}
+      \]
+    \item If $X \sim \Geo(p)$, then
+      \[
+        F_X(x) =
+        \begin{cases}
+          0 & \text{if $x < 0$} \\
+          1 - (1 - p)^k & \text{if $k \le x < k + 1$, for $k = 0, 1, 2, \dots$}.
+        \end{cases}
+      \]
+      This is because for $k \le x < k + 1$, we have
+      \[
+        \PP(X \le x)
+        = \sum_{\ell = 1}^k p(1 - p)^{\ell - 1}
+        = p \sum_{\ell = 0}^{k - 1} p(1 - p)^{\ell}
+        = p \frac{1 - (1 - p)^k}{1 - (1 - p)}
+        = 1 - (1 - p)^k
+      \]
+    \item If $X \sim \Poi(\lambda)$, then
+      \[
+        F_X(x) =
+        \begin{cases}
+          0 & \text{if $x < 0$} \\
+          \sum_{k = 0}^{n} e^{-\lambda} \lambda^k / k! & \text{if $n \le x < n + 1$, for $n = 0, 1, 2, \dots$}.
+        \end{cases}
+      \]
+  \end{itemize}
 \end{example}
 
 \begin{prop}
@@ -171,6 +206,77 @@
   \[
     \int_{\{x\}} f_X(t) \, dt = 0.
   \]
+  More generally, if $X$ is continuous, then
+  $\PP(X = x) = 0$ for every $x \in \R$.
+\end{remark}
+
+\section{Common Continuous Random Variables}
+
+\begin{example}
+  The following are common continuous random variables:
+  \begin{itemize}
+    \item \emph{Uniform random variables}: We say that
+      $X \sim \Unif([0, 1])$ if
+      \[
+        F_X(x) =
+        \begin{cases}
+          0 & \text{if $x < 0$} \\
+          x & \text{if $0 \le x < 1$} \\
+          1 & \text{if $x \ge 1$}.
+        \end{cases}
+      \]
+      In general, for $-\infty < a < b < \infty$, we
+      say that $X \sim \Unif([a, b])$ if
+      $(X - a) / (b - a) \sim \Unif([0, 1])$. In
+      this case, $X$ has pdf
+      \[
+        f_X(x) =
+        \begin{cases}
+          1 / (b - a) & \text{if $a \le x \le b$} \\
+          0 & \text{otherwise}.
+        \end{cases}
+      \]
+      Note that $f_X$ is continuous and
+      also differentiable everywhere except at
+      $x = a$ and $x = b$.
+    \item \emph{Exponential random variables}: For
+      $\lambda > 0$, we say that $X \sim \Exp(\lambda)$
+      if $X$ has density function
+      \[
+        f_X(t) =
+        \begin{cases}
+          \lambda e^{-\lambda t} & \text{if $t > 0$} \\
+          0 & \text{otherwise}.
+        \end{cases}
+      \]
+      The cdf of $X$ is
+      \[
+        F_X(x) = \int_{-\infty}^x f_X(t) \, dt =
+        \begin{cases}
+          0 & \text{if $x \le 0$} \\
+          1 - e^{-\lambda x} & \text{if $x > 0$}.
+        \end{cases}
+      \]
+      Note that $F_X$ is continuous and also
+      differentiable everywhere except $x = 0$.
+  \end{itemize}
+\end{example}
+
+\begin{remark}
+  The \emph{fundamental theorem of calculus} says that
+  for a fixed $c \in \R$,
+  \[
+    \frac{d}{dx} \int_{c}^x f(t) \, dt = f(x).
+  \]
+  When applied to distribution functions, this says
+  that
+  \[
+    \frac{d}{dx} F_X(x) =
+    \frac{d}{dx} \int_{-\infty}^x f_X(t) \, dt
+    = f_X(x),
+  \]
+  for almost all $x \in \R$ (whenever $F_X$ is
+  differentiable at $x$).
 \end{remark}
 
 \section{Homework Problems}

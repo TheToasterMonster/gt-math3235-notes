@@ -279,5 +279,177 @@
   differentiable at $x$).
 \end{remark}
 
+\section{Geometrical Probability}
+
+\begin{example}[Bertrand's paradox]
+  Consider a unit disk $U$, and choose a chord
+  $C$ of the disk at random. Let $T$ be the
+  equilateral triangle with one side $C$ (there
+  are two, choose the one that points towards the
+  center of the disk). Then what is $\PP(T \subseteq U)$?
+  The issue comes from how we choose $C$:
+  \begin{enumerate}
+    \item Suppose we choose angles $X, Y \in [0, 2\pi]$
+      uniformly at random, and then choose the chord
+      $C$ to go through $X, Y$. This amounts to
+      choose the difference uniformly at random
+      in $[0, 2\pi]$, since the problem is
+      rotationally invariant. We need $|X - Y| \le 2\pi / 3$, so
+      \[\PP(T \subseteq U) = \PP(-2\pi / 3 \le X - Y \le 2 \pi / 3) = \frac{2}{3}\]
+    \item Alternatively we could choose a point
+      $X$ at random and then choose a random angle
+      $\theta \in [0, \pi / 2]$ (from the tangent
+      line to $U$ at $X$). Clearly $X$ does not
+      matter, and we need $\theta \le \pi / 3$.
+      This gives
+      \[\PP(T \subseteq U) =
+        \PP(\theta \le \pi / 3) = 1 / 3
+        = \frac{\pi / 3}{\pi / 2} = \frac{2}{3}.
+      \]
+    \item We could also choose a direction
+      $\theta$, which determines a line through the
+      circle. Then choose a point $M \in [-1, 1]$
+      uniformly at random on this line, which
+      determines a chord if we let $M$ be the
+      midpoint and say that the chord is perpendicular
+      to the line. Then we need
+      $- 1 / 2 \le M \le 1 / 2$, os
+      \[
+        \PP(T \subseteq U) = \PP(-1 / 2 \le M \le 1 / 2) =
+        \frac{1}{2}.
+      \]
+    \item Finally, we could simply choose the
+      midpoint $M \in U$ at random. We need
+      $M$ to be within the circle of radius $1 / 2$
+      with the same center as $M$. Thus
+      in this case
+      \[
+        \PP(T \subseteq U) = \frac{\pi - \pi / 4}{\pi}
+        = \frac{3}{4}.
+      \]
+  \end{enumerate}
+  We see that, depending on the method in
+  which we choose the chord, the answer may be
+  different.
+\end{example}
+
+\begin{example}[Buffon's needle]
+  Consider horizontal lines in the plane, each
+  spaced distance $1$ apart. Drop a needle of
+  length $1$ at random. What is the probability that
+  the needle intersects a line?
+  \begin{itemize}
+    \item One way to proceed is to choose
+      $(X, Y)$ first as the position of the center
+      of the needle. Then choose $\theta \in [0, \pi]$
+      to be the angle of the needle. Note the
+      actual position of the needle does not matter,
+      so we can simply choose $Y \in [0, 1]$. Now
+      there are two cases:
+      \begin{enumerate}
+        \item If the needle intersects with the upper
+          line, then we need
+          \[
+            Y - \frac{1}{2} \sin \theta \le 1 \le Y + \frac{1}{2} \sin \theta \iff 1 - \frac{1}{2} \sin \theta \le Y \le 1 + \frac{1}{2} \sin \theta.
+          \]
+          Note that the second inequality is always
+          true, so we only need $Y \ge 1 - \frac{1}{2} \sin \theta$.
+        \item If the needle intersects with the lower
+          line, then we need
+          \[
+            Y - \frac{1}{2} \sin \theta \le 0 \le Y + \frac{1}{2} \sin \theta \iff -\frac{1}{2} \sin \theta \le Y \le \frac{1}{2} \sin \theta.
+        \]
+        This time the first inequality is always
+        true, so we just need $Y \le \frac{1}{2} \sin \theta$.
+      \end{enumerate}
+      So for the needle to intersect the
+      lines, we need $Y \le \frac{1}{2} \sin \theta$
+      or $Y \ge 1 - \frac{1}{2} \sin \theta$.
+      Consider the subset of $[0, \pi] \times [0, 1]$
+      which satsifies the above condition. There
+      are two symmetric regions of area
+      \[
+        \int_0^\pi \frac{1}{2} \sin \theta\, d\theta
+        = \frac{1}{2} [-\cos \theta]_{\theta = 0}^{\theta = \pi}
+        = \frac{1}{2} [1 - (-1)] = 1.
+      \]
+      Thus the area is $2$, and the probability is
+      $2 / \pi$.
+  \end{itemize}
+  This gives one way to estimate hte value of $\pi$.
+  Let $I_n$ be the number of times the needle
+  intersects with a line in $n$ trials. Then
+  $I_n / n \to 2 / \pi$ as $n \to \infty$, so
+  \[
+    \widehat{\pi}_n = \frac{2n}{I_n} \to \pi.
+  \]
+  This is called the \emph{Monte Carlo method},
+  which can also be used to estimate integrals.\footnote{Note that there are much more efficient methods than Monte Carlo for estimating $\pi$.}
+\end{example}
+
+\begin{example}[Stick breaking]
+  Choose $X, Y \in [0, 1]$ uniformly at random.
+  This determines two cuts of $[0, 1]$, which
+  breaks the interval into three segments. What is
+  the probability that these segments form the
+  sides of a triangle?
+  \begin{itemize}
+    \item
+  The pieces are of length $X, Y - X, 1 - Y$
+  (assume that $X \le Y$, which we can do since
+  we are choosing uniformly at random).
+      By the triangle inequality, we need
+      \[
+        \begin{cases}
+          X + (Y - X) \ge 1 - Y \\
+          (Y - X) + (1 - Y) > X \\
+          X + (1 - Y) > Y - X
+        \end{cases}
+        \implies \quad
+        \begin{cases}
+          Y > 1 / 2 \\
+          X < 1 / 2 \\
+          Y < 1 / 2 + X.
+        \end{cases}
+      \]
+      Draw the region in $[0, 1] \times [0, 1]$ that
+      satisfies the above, and we find that the probability
+      is $1 / 4$.
+  \end{itemize}
+\end{example}
+
+\begin{example}
+  Choose $n$ points on a circle uniformly
+  at random. What is the probability that
+  all $n$ points lie in some semicircle?
+  \begin{itemize}
+    \item Let $A$ be the event
+      $\{\text{all $n$ points lie in some semicircle}\}$.
+      The goal is to work with easier events.
+      Number the points by $P_1, P_2, \dots, P_n$.
+      Then let $A_i$ be the event that
+      $P_1, P_2, \dots, P_n$ lie in the semicircle
+      which begins at $P_i$. Then we easily find that
+      $\PP(A_i) = 1 / 2^{n - 1}$ for each $1 \le i \le n$.
+      Also
+      \[
+        A = A_1 \cup A_2 \cup \dots A_n,
+      \]
+      where the union is disjoint, since we cannot
+      have two different points both be the first point
+      in a semicircle (note that $\PP(P_i = P_j) = 0$
+      for $i \ne j$). Thus
+      \[
+        \PP(A) = \PP(A_1 \cup \dots \cup A_n)
+        = \PP(A_1) + \dots + \PP(A_n)
+        = n \PP(A_1) = \frac{n}{2^{n - 1}}
+      \]
+      since the union is disjoint.
+  \end{itemize}
+  If the problem is more difficult (the union is
+  not disjoint), one can try to apply
+  inclusion-exclusion.
+\end{example}
+
 \section{Homework Problems}
 Problems \#1, 2, 3, 4, 7, 9, 10, 14 from Grimmett and Welsh.

@@ -279,7 +279,184 @@
   differentiable at $x$).
 \end{remark}
 
-\section{Geometrical Probability}
+\begin{example}
+  A random variable $X$ is said to be \emph{normal}
+  (or \emph{Gaussian}) with parameters $\mu \in \R$
+  and $\sigma^2$ such that $\sigma > 0$, written
+  $X \sim \mathcal{N}(\mu, \sigma^2)$,
+  if its density is given by
+  \[
+    f_X(x) = \frac{1}{\sqrt{2\pi \sigma^2}} e^{-(x - \mu)^2 / (2\sigma^2)}
+  \]
+  for $-\infty < x < \infty$.
+  When $\mu = 0$, $\sigma^2 = 1$, then $X$ is
+  said to be the \emph{standard normal} distribution,
+  i.e.
+  \[
+    f_X(x) = \frac{1}{\sqrt{2\pi}} e^{-x^2 / 2}.
+  \]
+  To verify that this is a density,
+  first note that clearly $f_X(x) \ge 0$.
+  Now set $\displaystyle I = \int_{-\infty}^\infty e^{-x^2 / 2} \, dx$.
+  Then
+  \[
+    I^2 = \int_{-\infty}^\infty e^{-x^2 / 2} \, dx \int_{-\infty}^\infty e^{-y^2 / 2} \, dy
+    = \int_{-\infty}^\infty \int_{-\infty}^\infty e^{-(x^2 + y^2) / 2} \, dx \, dy.
+  \]
+  This step is justified by the Fubini-Tonelli theorem
+  since $e^{-(x^2 + y^2) / 2} \ge 0$. Then change
+  to polar coordinates (with $(x, y) = (r\cos \theta, r \sin \theta)$ and $dx dy = r\, dr d\theta$)
+  to get
+  \[
+    I^2 =
+    \int_0^\infty
+    \int_0^{2\pi}
+    r e^{-r^2 / 2}
+    \, dr \, d\theta
+    = 2\pi \int_0^\infty r e^{-r^2 / 2} \, dr.
+    = 2\pi \left[ e^{-r^2 / 2} \right]_{r = 0}^{r = \infty}
+    = 2\pi.
+  \]
+  Thus $I = \sqrt{2\pi}$ (since $I \ge 0$), so
+  $\displaystyle \int_{-\infty}^\infty f_X(x) \, dx = I / \sqrt{2\pi} = 1$. Thus $f_X$ is a density.
+  The fact that the general pdf $f_X$ is a density
+  follows from a change of coordinates
+  $y = (x - \mu) / \sigma$ with $dx = \sigma\, dy$,
+  so that
+  \[
+    \frac{1}{\sqrt{2\pi \sigma^2}}
+    \int_{-\infty}^\infty e^{-(x - \mu)^2 / (2\sigma^2)} \, dx
+    = \frac{1}{\sqrt{2\pi \sigma^2}} \int_{-\infty}^\infty
+    e^{-y^2 / 2} \sigma\, dy = \frac{1}{\sqrt{2\pi}} \int_{-\infty}^\infty e^{-y^2 / 2} \, dy = 1,
+  \]
+  where the latter integral is what we
+  computed previously.
+\end{example}
+
+\section{Expectation of Continuous Random Variables}
+\begin{theorem}[Law of the subconscious statistician]
+  Let $X$ be a random variable with pdf $f_X$, and let
+  $h : \R \to \R$ be a sufficiently nice function.\footnote{Here $h$ must be \emph{measurable}.}
+  Let $Y = h(X)$. Then
+  \[
+    \EE[Y] = \EE[h(X)] = \int_{-\infty}^\infty h(x) f_X(x) \, dx,
+  \]
+  provided that
+  $\displaystyle \int_{-\infty}^\infty h(x) f_X(x) \, dx$ converges
+  absolutely, i.e.
+  $\displaystyle \int_{-\infty}^\infty |h(x)| f_X(x) \, dx < \infty$.\footnote{The integral of $h(x) F_X(x)$ must be absolutely convergent for its \emph{Lebesgue integral} to exist.}
+\end{theorem}
+
+\begin{proof}
+  Use the Riemann sum approximation. First
+  restrict to a compact interval, e.g. $[0, 1]$.
+  Then
+  \[
+    \int_0^1 h(x) f_X(x) \, dx
+    \approx \sum_{i = 1}^n h(x_i) f_X(x_i) \Delta x
+  \]
+  for large $n$. Now appeal to the discrete
+  version of this result.
+\end{proof}
+
+\begin{example}
+  Let $X \sim \mathcal{N}(0, 1)$. Then we would like
+  to find
+  \[
+    \EE[X] = \frac{1}{\sqrt{2\pi}} \int_{-\infty}^\infty x e^{-x^2 / 2} \, dx.
+  \]
+  First we must check that this integral
+  converges absolutely. We write
+  \[
+    \EE[|X|]
+    = \frac{1}{\sqrt{2\pi}} \int_{-\infty}^\infty |x| e^{-x^2 / 2}\, dx
+    = \lim_{M_1, M_2 \to \infty}
+    \frac{1}{\sqrt{2\pi}} \int_{-M_1}^{M_2} |x| e^{-x^2 / 2} \, dx.
+  \]
+  In the finite setting, we can split the integral to
+  get
+  \begin{align*}
+    \EE[|X|]
+    &= \lim_{M_1, M_2 \to \infty}
+    \left[
+      \frac{1}{\sqrt{2\pi}} \int_0^{M_2} x e^{-x^2 / 2} \, dx
+      - \frac{1}{\sqrt{2\pi}} \int_{-M_1}^0 x e^{-x^2 / 2} \, dx
+    \right] \\
+    &= \lim_{M_2 \to \infty} \left[\frac{1}{\sqrt{2\pi}} (-e^{-x^2 / 2})\right]_{x = 0}^{x = M_2}
+    + \lim_{M_1 \to \infty} \left[\frac{1}{\sqrt{2\pi}} e^{-x^2 / 2}\right]_{x = -M_1}^{x = 0} \\
+    &= \lim_{M_2 \to \infty} \frac{1}{\sqrt{2\pi}} (1 - e^{-M_2^2 / 2})
+    + \lim_{M_1 \to \infty} \frac{1}{\sqrt{2\pi}} (1 - e^{-M_1^2 / 2})
+    = \sqrt{2 / \pi}.
+  \end{align*}
+  This establishes that $\EE[X]$ converges
+  absolutely. Thus we can argue that
+  \[
+    \EE[X] = \frac{1}{\sqrt{2\pi}} \int_{-\infty}^\infty x e^{-x^2 / 2} \, dx = 0
+  \]
+  since $x e^{-x^2 / 2}$ is an odd function on $\R$
+  (we can restrict to $[-M, M]$
+  and then take $M \to \infty$).
+\end{example}
+
+\begin{example}
+  Now let $X \sim \mathcal{N}(\mu, \sigma^2)$, and
+  we find $\EE[X]$. We have
+  \[
+    \EE[X] = \frac{1}{\sqrt{2\pi \sigma^2}} \int_{-\infty}^\infty x e^{-(x - \mu)^2 / (2\sigma^2)} \, dx.
+  \]
+  Make the change of variables $y = (x - \mu) / \sigma$
+  with $dx = \sigma\, dy$ to get
+  \begin{align*}
+    \EE[X]
+    = \frac{1}{\sqrt{2\pi \sigma^2}}
+    \int_{-\infty}^\infty (\sigma y + \mu) e^{-y^2 / 2} \sigma\, dy
+    &= \frac{\sigma}{\sqrt{2\pi}} \int_{-\infty}^\infty y e^{-y^2 / 2} \, dy + \frac{\mu}{\sqrt{2\pi}} \int_{-\infty}^\infty e^{-y^2 / 2} \, dy \\
+    &= 0 + \mu = \mu
+  \end{align*}
+\end{example}
+
+\begin{example}
+  Let $X \sim \mathcal{N}(0, 1)$, and we find
+  $\EE[X^2]$. We have
+  \[
+    \EE[X^2] = \frac{1}{\sqrt{2\pi}} \int_{-\infty}^\infty x^2 e^{-x^2 / 2} \, dx.
+  \]
+  This integrand is nonnegative, so no need to justify
+  absolute convergence. Now integrate by parts
+  with $u(x) = x$ and $v'(x) = x e^{-x^2 / 2}$ (with
+  $u'(x) = 1$ and $v(x) = -e^{-x^2 / 2}$) to get
+  \[
+    \EE[X^2] = \frac{1}{\sqrt{2\pi}} \left[ -x e^{-x^2 / 2} \right]_{x = -\infty}^{x = \infty} + \frac{1}{\sqrt{2\pi}} \int_{-\infty}^\infty e^{-x^2 / 2} \, dx = 0 + 1 = 1.
+  \]
+  In particular, this gives
+  $\Var[X] = \EE[X^2] - (\EE[X])^2 = 1 - 0 = 1$.
+\end{example}
+
+\begin{example}
+  In general, for $X \sim \mathcal{N}(\mu, \sigma^2)$,
+  we can compute
+  \[
+    \Var[X] = \EE[(X - \EE[X])^2]
+    = \EE[(X - \mu)^2]
+    = \frac{1}{\sqrt{2\pi \sigma^2}}
+    \int_{-\infty}^\infty (x - \mu)^2 e^{-(x - \mu)^2 / 2\sigma^2}\, dx.
+  \]
+  Now change variables with
+  $y = (x - \mu) / \sigma$ and $dx = \sigma\, dy$ to get
+  \[
+    \Var[X] = \frac{1}{2\pi \sigma^2} \int_{-\infty}^\infty \sigma^2 y^2 e^{-y^2 / 2} \sigma\, dy
+    = \frac{\sigma^2}{\sqrt{2\pi}} \int_{-\infty}^\infty y^2 e^{-y^2 / 2} \, dy
+    = \sigma^2.
+  \]
+\end{example}
+
+\begin{remark}
+  The previous computations show that
+  for $X \sim \mathcal{N}(\mu, \sigma^2)$, we have
+  $\EE[X] = \mu$ and $\Var[X] = \sigma^2$.
+\end{remark}
+
+\section{Geometric Probability}
 
 \begin{example}[Bertrand's paradox]
   Consider a unit disk $U$, and choose a chord

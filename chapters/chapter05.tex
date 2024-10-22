@@ -333,6 +333,27 @@
   computed previously.
 \end{example}
 
+\begin{example}
+  A random variable $X$ has the
+  \emph{standard Cauchy} distribution if
+  its pdf is given by
+  \[
+    f_X(x) = \frac{1}{\pi(1 + x^2)}, \quad
+    -\infty < x < \infty.
+  \]
+  Clearly we have $f_X(x) \ge 0$, and also we can
+  compute that
+  \[
+    \int_{-\infty}^\infty \frac{1}{\pi(1 + x^2)} \, dx
+    = \frac{1}{\pi} \lim_{N, M \to \infty}
+    \int_{-M}^N \frac{1}{1 + x^2} \, dx
+    = \frac{1}{\pi} \lim_{N, M \to \infty}
+    \left[\arctan x\right]_{-M}^N
+    = \frac{1}{\pi} \left(\frac{\pi}{2} + \frac{\pi}{2}\right)
+    = 1.
+  \]
+\end{example}
+
 \section{Expectation of Continuous Random Variables}
 \begin{theorem}[Law of the subconscious statistician]
   Let $X$ be a random variable with pdf $f_X$, and let
@@ -454,6 +475,251 @@
   The previous computations show that
   for $X \sim \mathcal{N}(\mu, \sigma^2)$, we have
   $\EE[X] = \mu$ and $\Var[X] = \sigma^2$.
+\end{remark}
+
+\begin{example}
+  Let $X$ be a standard Cauchy random variable.
+  We compute
+  \begin{align*}
+    \EE[|X|] = \frac{1}{\pi} \int_{-\infty}^\infty \frac{|x|}{1 + x^2} \, dx
+    &\ge \frac{1}{\pi} \int_1^\infty \frac{x}{1 + x^2}\, dx
+    = \frac{1}{\pi} \lim_{N \to \infty} \int_1^N \frac{x}{1 + x^2}\, dx \\
+    &= \frac{1}{\pi} \lim_{N \to \infty} \left[\frac{\ln(1 + x^2)}{2}\right]_{x = 1}^{x = N}
+    = \frac{1}{\pi} \lim_{N \to \infty} \left[\frac{\ln(1 + N^2)}{2} - \frac{\ln 2}{2}\right]
+    = \infty.
+  \end{align*}
+  In particular, this means that $\EE[X]$ does not
+  exist. This is an example of a \emph{heavy-tailed}
+  random variable.
+\end{example}
+
+\begin{remark}
+  For any random variable $X$, if $\EE[|X|] = \infty$
+  then $\EE[X^2] = \infty$ also. This is because
+  \[
+    \EE[X^2] = \int_{-\infty}^\infty x^2 f_X(x)\, dx
+    \ge \int_{|x| \ge 1} x^2 f_X(x)\, dx
+    \ge \int_{|x| \ge 1} |x| f_X(x)\, dx = \infty,
+  \]
+  since $x^2 \ge |x|$ for $|x| \ge 1$. Note that
+  $|x| f_X(x)$ is bounded on $|x| \le 1$, so its
+  integral on $[-1, 1]$ is finite.
+\end{remark}
+
+\section{The Gamma and Beta Random Variables}
+\begin{definition}
+  Define the \emph{gamma function} $\Gamma$ for $\alpha > 0$ by
+  \[
+    \Gamma(\alpha) = \int_0^\infty x^{\alpha - 1} e^{-x} \, dx.
+  \]
+\end{definition}
+
+\begin{prop}
+  The gamma function $\Gamma$ has the following
+  properties:
+  \begin{enumerate}[(i)]
+    \item $\Gamma(1) = 1$,
+    \item $\Gamma(\alpha + 1) = \alpha \Gamma(\alpha)$,
+      and in particular $\Gamma(n) = (n - 1)!$ for
+      positive integers $n$,
+    \item and
+      $\Gamma(1 / 2) = \sqrt{\pi}$.
+  \end{enumerate}
+\end{prop}
+
+\begin{proof}
+  $(i)$ We have
+  \[
+    \Gamma(1) = \int_0^\infty e^{-x}\, dx = 1.
+  \]
+
+  $(ii)$ We can integrate by parts with
+  $u(x) = x^{\alpha}$ and $v'(x) = e^{-x}$ to get
+  \[
+    \Gamma(\alpha + 1) = \int_0^\infty x^{\alpha} e^{-x} \, dx
+    = \left[x^{\alpha} (-e^{-x})\right]_0^\infty
+    + \alpha \int_0^\infty x^{\alpha - 1} e^{-x} \, dx
+    = \alpha \Gamma(\alpha).
+  \]
+  The second part follows by induction on $n$.
+
+  $(iii)$ Change variables with $u = \sqrt{x}$
+  and $dx / \sqrt{x} = \, du$ to get
+  \[
+    \Gamma\left(\frac{1}{2}\right)
+    = \int_0^\infty \frac{e^{-x}}{\sqrt{x}} \, du
+    = \int_0^\infty 2 e^{-u^2} \, du
+    = \sqrt{\pi}.
+  \]
+  Note that one can extend this by induction to
+  compute $\Gamma(\alpha)$ at positive half integers.
+\end{proof}
+
+\begin{example}
+  A random variable $X$ has the \emph{standard
+  gamma} distribution if its pdf is given by
+  \[
+    f_X(x) = \frac{1}{\Gamma(\alpha)} x^{\alpha - 1} e^{-x},
+    \quad x \in (0, \infty)
+  \]
+  for a constant $\alpha > 0$.\footnote{If $\alpha = 1$, then this reduces to the exponential distribution.}
+  In general, $X$ is a \emph{gamma random variable}
+  with parameters $\alpha > 0$ and $\lambda > 0$
+  if
+  \[
+    f_X(x; \alpha, \lambda)
+    = \frac{\lambda^{\alpha}}{\Gamma(\alpha)} x^{\alpha - 1} e^{-\lambda x},
+    \quad x > 0.
+  \]
+  Clearly $f_X(x) \ge 0$. For the integral, make the
+  change of variables $y = \lambda x$ with
+  $dx = dy / \lambda$ to get
+  \[
+    \int_0^\infty \frac{\lambda^{\alpha} x^{\alpha - 1 e^{-\lambda x}}}{\Gamma(\alpha)} \, dx
+    = \frac{1}{\Gamma(\alpha)}
+    \int_{0}^\infty \lambda^\alpha \left(\frac{y}{\lambda}\right)^{\alpha - 1} e^{-y} \, \frac{dy}{\lambda}
+    = \frac{\lambda^\alpha}{\Gamma(\alpha) \lambda^\alpha} \int_0^\infty y^{\alpha - 1} e^{-y} \, dy
+    = 1.
+  \]
+\end{example}
+
+\begin{remark}
+  There are relationships between the gamma,
+  Poisson, and geometric random variables, which
+  are useful in industrial engineering.
+\end{remark}
+
+\begin{example}
+  A random variable $X$ is said to be a
+  \emph{beta random variable} with parameters
+  $s, t > 0$ if
+  \[
+    f_X(x; s, t) = \frac{1}{\beta(s, t)} x^{s - 1} (1 - x)^{t - 1}, \quad 0 < x < 1,
+  \]
+  where $\beta$ is the \emph{beta function} given by
+  \[
+    \beta(s, t) = \int_0^1 x^{s - 1} (1 - x)^{t - 1}\, dx
+    = \frac{\Gamma(s) \Gamma(t)}{\Gamma(s + t)}.
+  \]
+\end{example}
+
+\begin{definition}
+  Taking a gamma random variable with parameters
+  $\alpha = n / 2$ and $\lambda = 1 / 2$, one gets
+  \[
+    f_X\left(x; \frac{n}{2}, \frac{1}{2}\right)
+    = \frac{1}{2\Gamma(n / 2)} \left(\frac{x}{2}\right)^{n / 2 - 1} e^{-x / 2}, \quad x > 0,
+  \]
+  which is called a \emph{$\chi^2$ (chi-squared) random variable} with $n$ degrees of freedom.
+\end{definition}
+
+\begin{remark}
+  The reason we care about $\chi^2$ random variables
+  is that
+  if $Z \sim \mathcal{N}(0, 1)$, then
+  $Z^2 = \chi^2(1)$. In general, if
+  $Z_1, \dots, Z_n \sim \mathcal{N}(0, 1)$ are
+  independent, then $Z_1^2 + \dots + Z_n^2 = \chi^2(n)$.
+\end{remark}
+
+\section{Functions of Continuous Random Variables}
+\begin{remark}
+Suppose $X$ has pdf $f_X$ and $h : \R \to \R$, so
+$Y = h(X)$ is a random variable. If $h$ is ``nice,''
+then $Y$ has a density $f_Y$. What is the relationship
+between $f_X$ and $f_Y$?
+\end{remark}
+
+\begin{remark}
+  Note that $f_Y$ need not have a density in general.
+  Let $X \sim \Unif([0, 1])$ and
+  \[
+  h(x) =
+  \begin{cases}
+    \pi & \text{if $0 \le x < 1 / 2$} \\
+    e & \text{if $1 / 2 \le x \le 1$} \\
+    0 & \text{otherwise}.
+  \end{cases}
+  \]
+  Then $Y = h(X)$ only takes two values with
+  positive probability, so it
+  cannot have a density (it is discrete).
+\end{remark}
+
+\begin{example}
+  Suppose first that $h(x) = ax + b$ with
+  $a > 0$. Then $Y = h(X) = aX + b$, and
+  \[
+    F_Y(y) = \PP(Y \le y)
+    = \PP(aX + b \le y)
+    = \PP\left(X \le \frac{y - b}{a}\right)
+    = F_X\left(\frac{y - b}{a}\right).
+  \]
+  Then we can differentiate to get
+  \[
+    f_Y(y) = \frac{d}{dy} F_Y(y)
+    = \frac{d}{dy} F_X\left(\frac{y - b}{a}\right)
+    = \frac{1}{a} f_X\left(\frac{y - b}{a}\right).
+  \]
+  If $a < 0$, then the inequality flips and we get
+  \[
+    F_Y(y) = \PP\left(X \ge \frac{y - b}{a}\right)
+    = 1 - \PP\left(X < \frac{y - b}{a}\right)
+    = 1 - F_X\left(\frac{y - b}{a}\right),
+  \]
+  so differentiating yields
+  \[
+    f_Y(y) = \frac{d}{dy} F_Y(y)
+    = -\frac{1}{a} f_X\left(\frac{y - b}{a}\right).
+  \]
+  Note that $a < 0$, so $-a > 0$ and thus $f_Y(y) \ge 0$.
+\end{example}
+
+\begin{theorem}
+  Let $X$ be an absolutely continuous random
+  variable with density function $f_X$, and let
+  $h : \R \to \R$ be strictly increasing
+  and differentiable. Then $Y = h(X)$ has
+  a density function given by
+  \[
+    f_Y(y) = f_X(h^{-1}(y)) \frac{d}{dy} h^{-1}(y)
+    \quad \text{for all $y \in \R$}.
+  \]
+\end{theorem}
+
+\begin{proof}
+  Since $h$ is strictly increasing, applying its
+  inverse preserves the inequality, so that
+  \[
+    F_Y(y) = \PP(h(X) \le y)
+    = \PP(X \le h^{-1}(y)).
+  \]
+  Differentiating this via the chain rule gives
+  the desired formula for $f_Y$.
+\end{proof}
+
+\begin{remark}
+  Note that
+  \[
+    \frac{d}{dy} h^{-1}(y)
+    = \frac{1}{h'(h^{-1}(y))}.
+  \]
+  This is because $h^{-1}(h(x)) = x$, so differentiating
+  via the chain rule gives
+  \[
+    1 = \frac{d}{dx} x = \frac{d}{dx} h^{-1}(h(x))
+    = (h^{-1})'(h(x)) h'(x).
+  \]
+  Dividing by $h'(x)$ and setting $x = h^{-1}(y)$ gives
+  the desired formula.
+\end{remark}
+
+\begin{remark}
+  Using the previous theorem, we can create
+  random number generators following a specified
+  distribution, given a random number generator
+  following a uniform distribution on
+  $[0, 1]$.
 \end{remark}
 
 \section{Geometric Probability}

@@ -720,6 +720,30 @@ between $f_X$ and $f_Y$?
   distribution, given a random number generator
   following a uniform distribution on
   $[0, 1]$.
+  Suppose that $X$ has cdf $F_X$ which
+  is strictly increasing (if $X$ has a density
+  $f_X$, then this holds on the support of $X$), so
+  that $F_X$ is invertible. Suppose that
+  we are given $U \sim \Unif([0, 1])$.
+  Then
+  \[
+    \PP(F_X^{-1}(U) \le x)
+    = \PP(F_X(F_X^{-1}(U)) \le F_X(x))
+    = \PP(U \le F_X(x)) = F_X(x)
+  \]
+  since $F_X$ is increasing (so the direction of
+  the inequality is preserved), and the cdf of
+  $U$ is simply the identity function on $[0, 1]$.
+  This says that $F_X^{-1}(U) \sim X$, so being
+  able to sampling
+  from $U$ is enough. In general, when
+  $F_X$ is not strictly increasing,
+  one can take the \emph{generalized inverse}:
+  \[
+    F_X^-(y) = \inf\{x \in \R : F_X(x) \ge y\}.
+  \]
+  Then one can show that again we have
+  $F_X^-(U) \sim X$.
 \end{remark}
 
 \section{Geometric Probability}

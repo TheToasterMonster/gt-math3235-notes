@@ -1,0 +1,203 @@
+\chapter{Multivariate Continuous Distributions}
+
+\section{Multivariate Absolutely Continuous Distributions}
+\begin{definition}
+  Let $(X, Y)$ be a two-dimensional random vector,
+  its \emph{distribution function} is given by
+  \[
+    F_{(X, Y)}(x, y) = \PP(X \leq x, Y \leq y)
+    \quad \text{for $(x, y) \in \R^2$}.
+  \]
+\end{definition}
+
+\begin{prop}
+  We have the following properties for the
+  distribution function of $(X, Y)$:
+  \begin{enumerate}[(i)]
+    \item $\lim_{x \to -\infty} F_{(X, Y)}(x, y) = 0$
+      and $\lim_{y \to -\infty} F_{(X, Y)}(x, y) = 0$.
+    \item $\lim_{x, y \to \infty} F_{(X, Y)}(x, y) = 1$.
+    \item $F_{(X, Y)}$ is weakly increasing
+      in each variable: If $x_1 \le x_2$ then
+      $F_{(X, Y)}(x_1, y) \le F_{(X, Y)}(x_2, y)$
+      and if $y_1 \le y_2$ then
+      $F_{(X, Y)}(x, y_1) \le F_{(X, Y)}(x, y_2)$.
+    \item If $x_1 \le y_1$ and $x_2 \le y_2$, then\footnote{One can interpret this integral as a \emph{Riemann-Stieltjes integral}.}
+      \[
+        \int_{x_1}^{x_2} \int_{y_1}^{y_2} dF(u, v)
+        \ge 0.
+      \]
+  \end{enumerate}
+\end{prop}
+
+\begin{proof}
+  $(i)$ We have
+  \begin{align*}
+    \lim_{x \to -\infty} F_{(X, Y)}(x, y)
+    &= \lim_{x \to -\infty} \PP(X^{-1}((-\infty, x])
+    \cap Y^{-1}((-\infty, y])) \\
+    &= \PP(Y^{-1}((-\infty, y]) \cap \bigcap_{x \in \R} X^{-1}((-\infty, x]) \\
+    &= \PP(Y^{-1}((-\infty, y]) \cap \varnothing)
+    = 0.
+  \end{align*}
+  $(ii)$ We have
+  \[
+    \lim_{x \to \infty} F_{(X, Y)}(x, y)
+    = \PP(\{X \le \infty\} \cap \{Y \le y\})
+    = \PP(Y \le y) = F_Y(y).
+  \]
+  Then taking $y \to \infty$ gives
+  $\lim_{y \to \infty} F_Y(y) = 1$.
+
+  $(iii)$ If $x_1 \le x_2$ and $y$ is fixed, then
+  $\PP(X \le x_1, Y \le y) \le \PP(X \le x_2, Y \le y)$ since
+  \[
+    X^{-1}((-\infty, x_1]) \cap Y^{-1}((-\infty, y])
+    \subseteq X^{-1}((-\infty, x_2]) \cap Y^{-1}((-\infty, y]).
+  \]
+
+  $(iv)$ The integral corresponds to $\PP(X \in (x_1, x_2), Y \in (y_1, y_2))$,
+  which must be nonnegative.
+\end{proof}
+
+\begin{remark}
+  The above properties characterize distribution
+  functions of two-dimensional random vectors.
+\end{remark}
+
+\section{Independence of Continuous Random Variables}
+\begin{definition}
+  Two random variables $X, Y$ are said to be
+  \emph{independent}
+  if for all $x, y \in \R$, the events
+  $\{X \le x\}$ and $\{Y \le y\}$ are independent.
+\end{definition}
+
+\begin{prop}
+  Two continuous random variables $X, Y$ are independent
+  if and only if \[
+    F_{(X, Y)}(x, y) = F_X(x) F_Y(y)
+  \]
+  for every $x, y \in \R$.
+\end{prop}
+
+\begin{proof}
+  $(\Rightarrow)$ If $X$ and $Y$ are independent,
+  then $\{X \le x\}$ and $\{Y \le y\}$ are independent
+  for all $x, y \in \R$, so
+  \[
+    \PP(\{X \le x\} \cap \{Y \le y\}) = \PP(\{X \le x\}) \PP(\{Y \le y\}),
+  \]
+  i.e. we have $F_{(X, Y)}(x, y) = F_X(x) F_Y(y)$.
+
+  $(\Leftarrow)$ If $F_{(X, Y)}(x, y) = F_X(x) F_Y(y)$,
+  then for all $x, y \in \R$, then
+  \[
+    \PP(X \le x, Y \le y)
+    = \PP(X \le x) \PP(Y \le y),
+  \]
+  i.e. the events $\{X \le x\}$ and $\{Y \le y\}$ are independent.
+\end{proof}
+
+\begin{definition}
+  The pair of random variables $(X, Y)$
+  is said to be \emph{jointly (absolutely continuous)}
+  if its joint cdf can be written as
+  \[
+    F_{(X, Y)}(x, y) = \int_{-\infty}^x \int_{-\infty}^y f_{(X, Y)}(u, v) \, du dv
+  \]
+  for all $x, y \in \R$ and
+  $f_{(X, Y)} : \R^2 \to [0, \infty)$. If this is the
+  case, then $f_{(X, Y)}$ is called the \emph{joint pdf}
+  of $(X, Y)$.
+\end{definition}
+
+\begin{remark}
+  We have
+  \[
+    \frac{\partial^2}{\partial x \partial y} F_{(X, Y)}(x, y) = f_{(X, Y)}(x, y)
+  \]
+  if this derivative exists at $(x, y)$. If it
+  does not exist then we set $f_{X, Y}(x, y) = 0$ (this is fine since an absolutely continuous function is
+  differentiable \emph{almost everywhere}, i.e.
+  except on a set of measure zero).
+\end{remark}
+
+\begin{remark}
+  In the context of densities, we have for
+  $A \subseteq \R^2$ (which is ``nice enough'') that
+  \[
+    \PP((X, Y) \in A) = \iint_A f_{(X, Y)}(u, v) \, du dv.
+  \]
+  Here the ``nice enough'' sets are the ones which
+  can be built up from rectangles.
+\end{remark}
+
+\begin{definition}
+  Let $(X, Y)$ be a continuous random vector
+  with joint pdf $f_{(X, Y)}$. The \emph{marginal pdf}
+  of $X$, denoted by $f_X$ is given by
+  \[
+    f_X(x) = \int_{-\infty}^\infty f_{(X, Y)}(x, y) \, dy.
+  \]
+  The marginal pdf $f_Y$ of $Y$ is defined similarly,
+  integrating out the $x$ variable instead.
+\end{definition}
+
+\begin{remark}
+  Clearly $f_X$ (as defined above) is nonnegative
+  and also
+  \[
+    \int_{-\infty}^\infty f_X(x) \, dx
+    = \int_{-\infty}^\infty \int_{-\infty}^\infty f_{(X, Y)}(x, y) \, dy \, dx
+    = 1.
+  \]
+  Thus $f_X$ is indeed a valid density function.
+\end{remark}
+
+\begin{prop}
+  Let $X$ and $Y$ be jointly absolutely continuous
+  random variables with joint pdf $f_{(X, Y)}$.
+  Then $X$ and $Y$ are independent if and only if
+  $f_{(X, Y)}$ can be expressed as
+  \[
+    f_{(X, Y)}(x, y) = g(x) h(y)
+  \]
+  for every $x, y \in \R$, where $g, h : \R \to [0, \infty)$.
+\end{prop}
+
+\begin{proof}
+  $(\Rightarrow)$ By independence, we have
+  $F_{(X, Y)}(x, y) = F_X(x) F_Y(y)$, so
+  \begin{align*}
+    f_{(X, Y)}(x, y)
+    = \frac{\partial^2}{\partial x \partial y} F_{(X, Y)}(x, y)
+    &= \frac{\partial}{\partial x} \left(\frac{\partial}{\partial y} F_X(x) F_Y(y)\right)
+    = \frac{\partial}{\partial x} \left(F_X(x) \frac{\partial}{\partial y} F_Y(y)\right) \\
+    &= \frac{\partial}{\partial x}\left(F_X(x) f_Y(y)\right)
+    = f_X(x) f_Y(y).
+  \end{align*}
+  This gives the desired conclusion in this direction.
+
+  $(\Leftarrow)$ Check this as an exercise.
+\end{proof}
+
+\begin{prop}
+  Random variables $X, Y$ are independent if and
+  only if
+  \[\EE[h_1(X) h_2(Y)] = \EE[h_1(X)] \EE[h_2(Y)]\]
+  for all $h_1, h_2 : \R \to \R$.
+\end{prop}
+
+\begin{proof}
+  $(\Rightarrow)$ This is clear by the independence
+  of $X$ and $Y$.
+
+  $(\Leftarrow)$ As in the discrete case, use
+  indicator functions. Then argue using limits
+  of indicators.
+\end{proof}
+
+\section{Homework Problems}
+Problems \#1, 3, 4, 9, 11, 15, 20, 21, 24, 26
+from Grimmett and Welsh.

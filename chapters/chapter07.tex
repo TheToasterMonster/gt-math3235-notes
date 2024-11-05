@@ -1,0 +1,51 @@
+\chapter{Moment Generating Functions}
+
+\section{Other Types of Random Variables}
+\begin{remark}
+  Random variables may be neither discrete nor
+  continuous. Let $X \sim \Exp(1)$ with
+  \[
+    f_X(x)
+    \begin{cases}
+      e^{-x} & \text{if $x > 0$}, \\
+      0 & \text{otherwise}
+    \end{cases}
+    \quad \text{and} \quad
+    F_X(x) =
+    \begin{cases}
+      0 & \text{if $x \leq 0$}, \\
+      1 - e^{-x} & \text{if $x > 0$}.
+    \end{cases}
+  \]
+  Let $Y$ be a discrete random variable, say
+  given by
+  \[
+    \PP(Y = k) = 2^{k - 1}, \quad k = 1, 2, \ldots.
+  \]
+  Define
+  \[
+    F(x) = \frac{1}{2} F_Y(x) + \frac{1}{2} F_X(x)
+    = \frac{1}{2} F_Y(x) + \frac{1}{2}(1 - e^{-x}).
+  \]
+  One can show that
+  $F$ is increasing, $\lim_{x \to \infty} F(x) = 1$,
+  $\lim_{x \to -\infty} F(x) = 0$, and $F$ is
+  right-continuoous, so $F$ is a distribution function.
+  But $F$ is not a step function or continuous, so
+  the random variable with distribution function
+  $F$ is neither discrete nor continuous.
+\end{remark}
+
+\begin{remark}
+  In general, there is another type of random
+  variable called a \emph{singular random variable},
+  which has zero density almost everywhere but is
+  not constant. One can show that every random
+  variable $X$ can be uniquely decomposed as
+  \[
+    X = X_{\text{disc}} + X_{\text{cont}} + X_{\text{sing}},
+  \]
+  where $X_{\text{disc}}$ is discrete, $X_{\text{cont}}$,
+  is absolutely continuous, and
+  $X_{\text{sing}}$ is singular continuous.
+\end{remark}

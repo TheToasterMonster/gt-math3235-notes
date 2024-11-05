@@ -402,6 +402,169 @@
   The computation for $\EE[Y]$ is identical.
 \end{proof}
 
+\section{Bivariate Normal Distribution}
+
+\begin{definition}
+  The random vector $(X, Y)$ is said to be
+  \emph{normally distributed} if
+  \[
+    f_{(X, Y)}(x, y) = \frac{1}{2\pi \sqrt{1 - \rho^2}}
+    \exp\left(-\frac{1}{2(1 - \rho^2)} (x^2 - 2\rho xy + y^2)\right)
+  \]
+  for all $x, y \in \R$ and $\rho \in (-1, 1)$.
+\end{definition}
+
+\begin{remark}
+  Note that if $\rho = 0$, then the joint density
+  becomes
+  \[
+    f_{(X, Y)}(x, y) = \frac{1}{2\pi} \exp\left(-\frac{1}{2}(x^2 + y^2)\right)
+    = \frac{1}{\sqrt{2\pi}} e^{-x^2 / 2}
+    \cdot \frac{1}{\sqrt{2\pi}} e^{-y^2 / 2}
+  \]
+  for every $x, y \in \R$. So $X, Y$ are
+  independent and $X, Y \sim \mathcal{N}(0, 1)$.
+\end{remark}
+
+\begin{example}
+  We can compute the marginal distribution of $X$ by
+  \begin{align*}
+    f_X(x)
+    = \int_{-\infty}^\infty f_{(X, Y)}(x, y)\, dxdy
+    &= \frac{1}{2\pi \sqrt{1 - \rho^2}} \int_{-\infty}^\infty e^{-(x^2 - 2\rho xy + y^2) / 2(1 - \rho^2)} \, dy \\
+    &= \frac{1}{2\pi\sqrt{1 - \rho^2}} \int_{-\infty}^\infty e^{-((y - \rho x)^2 + x^2(1 - \rho^2)) / 2 (1 - \rho^2)}\, dy \\
+    &= \frac{1}{2\pi\sqrt{1 - \rho^2}} e^{-x^2(1 - \rho^2) / 2(1 - \rho^2)} \int_{-\infty}^\infty e^{-(y - \rho x)^2 / 2 (1 - \rho^2)}\, dy \\
+    &= \frac{e^{-x^2 / 2}}{\sqrt{2\pi}} \cdot \frac{1}{\sqrt{2\pi(1 - \rho^2)}} \int_{-\infty}^\infty e^{-(y - \rho x)^2 / 2(1 - \rho^2)}\, dy
+    = \frac{1}{\sqrt{2\pi}} e^{-x^2 / 2},
+  \end{align*}
+  since the last integral is the integral of the pdf
+  of a $\mathcal{N}(\rho x, 1 - \rho^2)$ random
+  variable. From this we can recognize that
+  $X \sim \mathcal{N}(0, 1)$, and by symmetry
+  we also see that $Y \sim \mathcal{N}(0, 1)$.
+\end{example}
+
+\begin{example}
+  Now we compute the conditional pdf of $Y$
+  given $X = x$. This is
+  \begin{align*}
+    f_{Y | X}(y | x)
+    = \frac{f_{(X, Y)}(x, y)}{f_X(x)}
+    = \frac{e^{-((y - \rho^2) + x^2(1 - \rho^2)) / 2(1 - \rho^2)}}{\sqrt{2\pi} \sqrt{2\pi (1 - \rho^2)}} 
+    \cdot \frac{\sqrt{2\pi}}{e^{-x^2 / 2}}
+    &= \frac{e^{-(y - \rho x)^2 / 2(1 - \rho^2)}}{\sqrt{2\pi(1 - \rho^2)}}.
+  \end{align*}
+  This shows that $Y | X = x$ has a normal
+  density with mean $\rho x$ and variance $1 - \rho^2$.
+  We also get the formula for $f_{X | Y}(x | y)$
+  by symmetry by exchanging the roles of $x$ and $y$.
+  Note that this also gives
+  \[
+    \EE[Y | X = x] = \rho x \quad \text{and} \quad
+    \EE[X | Y = y] = \rho y.
+  \]
+  Note that the conditional expectation of
+  $X$ given $Y = y$ is linear in $y$ (and linear
+  in $x$ for $Y | X = x$).
+\end{example}
+
+\begin{example}
+  We compute $\EE[XY]$. We can write
+  \[
+    \EE[XY] = \int_{-\infty}^\infty \EE[XY | X = x] f_X(x)\, dx.
+  \]
+  Since we condition on $X = x$, we have
+  $\EE[XY | X = x] = \EE[xY | X = x] = x \EE[Y | X = x]$, and so
+  \[
+    \EE[XY] = \int_{-\infty}^\infty x \EE[Y | X = x] f_X(x)\, dx
+    = \int_{\infty}^\infty x (\rho x) f_X(x)\, dx
+    = \rho \int_{-\infty}^\infty x^2 f_X(x)\, dx
+    = \rho
+  \]
+  since we recognize the last integral as
+  the integral for $\Var[X] = 1$.
+\end{example}
+
+\begin{definition}
+  The \emph{covariance} of two random variables
+  $X$ and $Y$ is
+  defined by
+  \[
+    \Cov(X, Y)
+    = \EE[(X - \EE[X])(Y - \EE[Y])]
+    = \EE[XY] - \EE[X] \EE[Y].
+  \]
+\end{definition}
+
+\begin{remark}
+  The above computations show that
+  \[
+    \Cov(X, Y) = \EE[XY] - \EE[X] \EE[Y] = \rho - 0 \cdot 0 = \rho.
+  \]
+  So the parameter $\rho$ in the bivariate normal
+  pdf is the covariance of $X$ and $Y$.
+\end{remark}
+
+\begin{remark}
+  If $(X, Y)$ is a normal random vector, then
+  $X$ and $Y$ are independent \emph{if and only if}
+  $X$ and $Y$ are uncorrelated, i.e. $\Cov(X, Y) = 0$.
+  Recall that being uncorrelated does not
+  imply independence in general. This special case
+  works because the conditional expectations are
+  linear.
+\end{remark}
+
+\begin{definition}
+  The \emph{correlation coefficient} of two random
+  variables $X$ and $Y$ is given by
+  \[
+  \rho(X, Y) = \frac{\Cov(X, Y)}{\sqrt{\Var[X]} \sqrt{\Var[Y]}},
+  \]
+  provided that $\Var[X], \Var[Y] > 0$, i.e.
+  $X \ne \EE[X]$ and $Y \ne \EE[Y]$.
+\end{definition}
+
+\begin{definition}
+  Let $\mu \in \R^d$ and $\Sigma$ be a
+  positive definite symmetric $d \times d$ matrix.
+  We say that $X$ has the multivariate
+  normal distribution with mean $\mu$ and
+  covariance matrix $\Sigma$, written
+  $X \sim \mathcal{N}(\mu, \Sigma)$, if
+  \[
+    f_X(x) = \frac{1}{(2\pi)^{d / 2} \sqrt{\det \Sigma}} \exp\left(-\frac{1}{2}(x - \mu)^T \Sigma^{-1} (x - \mu)\right)
+    \quad \text{for all $x \in \R^d$}.
+  \]
+\end{definition}
+
+\begin{remark}
+  When $d = 2$, we get
+  \[
+    f_X(x) = \frac{1}{2\pi \sqrt{\sigma_1^2 \sigma_2^2 (1 - \rho^2)}}
+    \exp\left(\frac{-1}{2(1 - \rho^2)} \left[\frac{(x_1 - \mu_1)^2}{\sigma_1^2} - \frac{2\rho(x_1 - \mu_1)(x_2 - \mu_2)}{\sigma_1 \sigma_2} + \frac{(x_2 - \mu_2)^2}{\sigma_2^2}\right]\right)
+  \]
+  as the joint pdf. Here we have
+  \[
+    x =
+    \begin{bmatrix}
+      x_1 \\ x_2
+    \end{bmatrix}, \quad
+    \mu =
+    \begin{bmatrix}
+      \mu_1 \\ \mu_2
+    \end{bmatrix}, \quad \text{and} \quad
+    \Sigma =
+    \begin{bmatrix}
+      \sigma_1^2 & \rho \sigma_1 \sigma_2 \\
+      \rho \sigma_1 \sigma_2 & \sigma_2^2
+    \end{bmatrix}.
+  \]
+  If $X = (X_1, X_2)$, then $\EE[X_1] = \mu_1$,
+  $\EE[X_2] = \mu_2$, $\Var[X_1] = \sigma_1^2$,
+  $\Var[X_2] = \sigma_2^2$, and $\rho(X_1, X_2) = \rho$.
+\end{remark}
+
 \section{Homework Problems}
 Problems \#1, 3, 4, 9, 11, 15, 20, 21, 24, 26
 from Grimmett and Welsh.

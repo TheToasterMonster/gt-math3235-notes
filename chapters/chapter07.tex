@@ -3,7 +3,7 @@
 \section{Other Types of Random Variables}
 \begin{remark}
   Random variables may be neither discrete nor
-  continuous. Let $X \sim \Exp(1)$ with
+  absolutely continuous. Let $X \sim \Exp(1)$ with
   \[
     f_X(x)
     \begin{cases}
@@ -49,3 +49,200 @@
   is absolutely continuous, and
   $X_{\text{sing}}$ is singular continuous.
 \end{remark}
+
+\section{Covariance}
+\begin{definition}
+  For two random variables $X, Y$ with
+  $\EE[X^2], \EE[Y^2] < \infty$, their \emph{covariance}
+  is
+  \[
+    \Cov(X, Y) = \EE[(X - \EE[X])(Y - \EE[Y])]
+    = \EE[XY] - \EE[X]\EE[Y].
+  \]
+\end{definition}
+
+\begin{remark}
+  Why do we need $\EE[X^2], \EE[Y^2] < \infty$?
+  This is because of the \emph{Cauchy-Schwarz inequality}.
+\end{remark}
+
+\begin{prop}[Cauchy-Schwarz inequality]
+  Let $X, Y$ be two random variables with
+  $\EE[X^2], \EE[Y^2] < \infty$. Then we have
+  \[
+    |\EE[XY]| \leq \sqrt{\EE[X^2]}\sqrt{\EE[Y^2]}.
+  \]
+\end{prop}
+
+\begin{proof}
+  Let $x \in \R$ and consider $A(x) = xX + Y$. Then
+  \[
+    0 \le P(x) = \EE[(xX + Y)^2] = \EE[x^2 X^2 + 2x XY + Y^2]
+    = x^2 \EE[X^2] + 2x \EE[XY] + \EE[Y^2].
+  \]
+  Since $P(x) \ge 0$ for all $x \in \R$, its
+  discriminant must be non-positive, i.e.
+  \[
+    (2\EE[XY])^2 - 4\EE[X^2]\EE[Y^2] \le 0,
+  \]
+  which implies that $\EE[XY]^2 \le \EE[X^2]\EE[Y^2]$,
+  or $|\EE[XY]| \le \sqrt{\EE[X^2]}\sqrt{\EE[Y^2]}$.
+\end{proof}
+
+\begin{remark}
+  Why does $\EE[X^2] < \infty$ imply that
+  $\EE[XY] < \infty$? This is because
+  \[
+    \EE[|X|] = \EE[|X| \cdot 1]
+    \le \sqrt{\EE[|X|^2]}\sqrt{\EE[1]}
+    = \sqrt{\EE[X^2]} < \infty
+  \]
+  by the Cauchy-Schwarz inequality, when $\EE[X^2] < \infty$.
+\end{remark}
+
+\begin{remark}
+  Recall the correlation coefficient $\rho(X, Y)$.
+  When $\EE[X^2], \EE[Y^2] < \infty$, we have
+  \begin{align*}
+    |{\Cov(X, Y)}| = |\EE[(X - \EE[X])(Y - \EE[Y])]|
+    &\le \sqrt{\EE[(X - \EE[X])^2]}\sqrt{\EE[(Y - \EE[Y])^2]} \\
+    &= \sqrt{\Var(X)}\sqrt{\Var(Y)}
+  \end{align*}
+  by the Cauchy-Schwarz inequality. This implies
+  that $-1 \le \rho(X, Y) \le 1$. Note that $\rho(X, Y)$ is analogous to the cosine of the angle $\theta$ between two vectors,
+  where for $x, y \in \R^n$ we defined
+  \[
+    \cos \theta = \frac{\langle x, y \rangle}{\|x\|\|y\|}
+    = \frac{\langle x, y \rangle}{\sqrt{\langle x, x \rangle}\sqrt{\langle y, y \rangle}}.
+  \]
+  Recall that $\cos \theta$ if and only if
+  $x \perp y$. Similarly,
+  $\rho(X, Y) = 0$ if and only if $\Cov(X, Y) = 0$,
+  which is a sense of \emph{orthogonality} for
+  $X$ and $Y$. This is justification for the
+  notation $X \indep Y$ for independence.
+  Also,
+  \begin{align*}
+    \cos \theta = 1 \quad &\text{if and only if} \quad x = a y, \, a > 0, \\
+    \cos \theta = -1 \quad &\text{if and only if} \quad x = a y, \, a < 0.
+  \end{align*}
+  Similarly, for random variables $X = aY + b$
+  with $a \ne 0$ and $b \in \R$,
+  \begin{align*}
+    \rho(X, Y)
+    &= \frac{\Cov(aY + b, Y)}{\sqrt{\Var[aY + b]}\sqrt{\Var[Y]}}
+    = \frac{\EE[(aY + b)Y] - \EE[aY + b]\EE[Y]}{\sqrt{\Var[aY]}\sqrt{\Var[Y]}} \\
+    &= \frac{\EE[aY^2] + b \EE[Y] - a\EE[Y]\EE[Y] - b \EE[Y]}{\sqrt{a^2 \Var[Y]} \sqrt{\Var[Y]}}
+    = \frac{a\Var[Y]}{|a| \Var[Y]} = \frac{a}{|a|}.
+  \end{align*}
+  This is similar to the result for $\cos \theta$.
+  Thus $\rho(X, Y)$ is a measure of the linear
+  dependence of $X$ and $Y$.
+  Note that we also have the converse:
+  If $\rho(X, Y) = \pm 1$, then $X = aY + b$ for
+  some $a \ne 0$ and $b \in \R$. This is due to the
+  sharpness of the Cauchy-Schwarz inequality
+  (double root if and only if discriminant is $0$).
+\end{remark}
+
+\begin{prop}
+  Suppose $X_1, \dots, X_n$ are independent
+  random variables, and let
+  $L = \sum_{k = 1}^n a_k X_k$ for some
+  $a_k \in \R$. Then
+  \[
+    \Var[L] = \sum_{k = 1}^n a_k^2 \Var[X_k].
+  \]
+\end{prop}
+
+\begin{proof}
+  By independence (recall that $\Var[X + Y] = \Var[X] + \Var[Y]$ when $X \indep Y$), we have
+  \[
+    \Var[L] = \Var\left[\sum_{k = 1}^n a_k X_k\right]
+    = \sum_{k = 1}^n \Var[a_k X_k]
+    = \sum_{k = 1}^n a_k^2 \Var[X_k].
+  \]
+  This is the desired formula.
+\end{proof}
+
+\begin{prop}
+  Suppose $X_1, \dots, X_n$ are random variables (not
+  necessarily independent), and
+  let $L = \sum_{k = 1}^n a_k X_k$ for some $a_k \in \R$.
+  Then
+  \[
+    \Var[L]
+    = \sum_{k = 1}^n a_k^2 \Var[X_k] + 2 \sum_{1 \le k < \ell \le n} a_k a_\ell \Cov(X_k, X_\ell).
+  \]
+\end{prop}
+
+\begin{proof}
+  First observe that
+  \[
+    \EE[L] = \EE\left[\sum_{k = 1}^n a_k X_k\right]
+    = a_k \EE[X_k],
+  \]
+  so we get that
+  \[
+    \Var[L] = \EE[L^2] - \EE[L]^2
+    = \EE\left[\left(\sum_{k = 1}^n a_k (X_k - \EE[X_k])\right)^2\right].
+  \]
+  Expanding the square, we obtain
+  \begin{align*}
+    \Var[L]
+    &= \EE\left[\sum_{k = 1}^n \sum_{\ell = 1}^n a_k a_\ell (X_k - \EE[X_k])(X_\ell - \EE[X_\ell])\right]
+    = \sum_{k = 1}^n \sum_{\ell = 1}^n a_k a_\ell \EE[(X_k - \EE[X_k])(X_\ell - \EE[X_\ell])] \\
+    &= \sum_{k = 1}^n \sum_{\ell = 1}^n a_k a_\ell \Cov(X_k, X_\ell)
+    = \sum_{k = 1}^n a_k^2 \Var[X_k] + \sum_{1 \le k \ne \ell \le n} a_k a_\ell \Cov(X_k, X_\ell) \\
+    &= \sum_{k = 1}^n a_k^2 \Var[X_k] + 2 \sum_{1 \le k < \ell \le n} a_k a_\ell \Cov(X_k, X_\ell),
+  \end{align*}
+  where we have used $\Var[X] = \Cov(X, X)$.
+  This is the desired formula.
+\end{proof}
+
+\begin{corollary}
+  If $X_1, \dots, X_n$ are pairwise
+  uncorrelated, i.e.
+  $\Cov(X_k, X_\ell) = 0$ for all $k \ne \ell$, then
+  \[
+    \Var\left[\sum_{k = 1}^n a_k X_k\right]
+    = \sum_{k = 1}^n a_k^2 \Var[X_k].
+  \]
+\end{corollary}
+
+\begin{prop}
+  Let $L_1 = \sum_{k = 1}^n a_k X_k$ and
+  $L_2 = \sum_{k = 1}^n b_k X_k$ for some $a_k, b_k \in \R$.
+  Then
+  \[
+    \Cov(L_1, L_2) = \sum_{k = 1}^n \sum_{\ell = 1}^n a_k b_\ell \Cov(X_k, X_\ell),
+  \]
+  i.e. the covariance is bilinear.
+\end{prop}
+
+\begin{proof}
+  Since $\EE[L_1] = \sum_{k = 1}^n a_k \EE[X_k]$ and
+  $\EE[L_2] = \sum_{k = 1}^n b_k \EE[X_k]$, we have
+  \begin{align*}
+    \Cov(L_1, L_2)
+    &= \EE\left[\left(\sum_{k = 1}^n a_k(X_k - \EE[X_k]) \right)\left(\sum_{\ell = 1}^n b_\ell (Y_\ell - \EE[Y_\ell])\right)\right] \\
+    &= \EE\left[\sum_{k = 1}^n \sum_{\ell = 1}^n a_k b_\ell (X_k - \EE[X_k])(X_\ell - \EE[X_\ell])\right] \\
+    &= \sum_{k = 1}^n \sum_{\ell = 1}^n a_k b_\ell \EE[(X_k - \EE[X_k])(X_\ell - \EE[X_\ell])]
+    = \sum_{k = 1}^n \sum_{\ell = 1}^n a_k b_\ell \Cov(X_k, X_\ell),
+  \end{align*}
+  which is the desired result.
+\end{proof}
+
+\section{Moment Generating Functions}
+\begin{definition}
+  Let $X$ be a random variable. The
+  \emph{moment generating function} of $X$, if it
+  exists, is
+  \[
+    M_X(t) = \EE[e^{tX}] \quad t \in \R.
+  \]
+\end{definition}
+
+\section{Homework Problems}
+Problems \#2, 3, 8, 10, 14, 17, 18, 20, 24
+from Grimmett and Welsh.

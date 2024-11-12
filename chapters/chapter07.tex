@@ -239,9 +239,280 @@
   \emph{moment generating function} of $X$, if it
   exists, is
   \[
-    M_X(t) = \EE[e^{tX}] \quad t \in \R.
+    M_X(t) = \EE[e^{tX}] \quad \text{for $t \in \R$}.
   \]
 \end{definition}
+
+\begin{remark}
+  Since $e^{tX} \ge 0$,
+  $M_X(t) \ge 0$.
+  So the only way that $M_x(t)$ might not exist
+  is if it is infinite.
+\end{remark}
+
+\begin{example}
+  If $X$ is absolutely continuous with density
+  $f_X$, then
+  \[
+    M_X(t) = \int_{-\infty}^\infty e^{tx} f_X(x) \, dx.
+  \]
+  This is essentially the \emph{Laplace transform}
+  of $f_X$. Note that for $t = 0$, we have
+  \[
+    M_X(0)
+    = \EE[e^{0X}]
+    = \EE[1] = 1.
+  \]
+  In particular, $M_X(0)$ is always finite.
+  However, $M_X(t)$ could be infinite for every
+  $t \ne 0$.
+\end{example}
+
+\begin{example}
+  In the discrete case where $X$ has pmf $p_X$, we
+  have
+  \[
+    M_X(t) = \sum_{x \in \mathcal{R}(X)} e^{tx} p_X(x).
+  \]
+\end{example}
+
+\begin{remark}
+  Why is $M_X$ called the moment generating
+  function? This is because
+  \[
+    M_X(t) = \EE[e^{tX}]
+    = \EE\left[\sum_{k = 0}^\infty \frac{(tX)^k}{k!}\right]
+    = \sum_{k = 0}^\infty \EE\left[\frac{t^k X^k}{k!}\right]
+    = \sum_{k = 0}^\infty \frac{t^k \EE[X^k]}{k!}.
+  \]
+  The exchange of the sum and expectation is justified
+  by uniform convergence
+  when $M_X(t)$ exists in an open neighborhood of $0$,
+  By the uniqueness of Taylor expansions, we obtain
+  that
+  \[
+    M_X^{(k)}(0) = \EE[X^k] \quad \text{for $k \in 0, 1, 2, \dots$},
+  \]
+  i.e. $M_X$ generates the moments of $X$.
+\end{remark}
+
+\begin{theorem}
+  If a moment generating function $M_X(t)$ exists
+  for all $t \in (-\delta, \delta)$ for some
+  $\delta > 0$, then $M_X$ uniquely determines
+  the distribution of $X$. Moreover,
+  $\EE[|X|^k] < \infty$ for all $k = 1, 2, \dots$ and
+  \[
+    M_X(t) = \sum_{k = 0}^\infty \frac{t^k \EE[X^k]}{k!}
+    \quad \text{for $t \in (-\delta, \delta)$}.
+  \]
+\end{theorem}
+
+\begin{proof}
+  Look this up.
+  The idea is that if
+  $M_X(t)$ exists for $t \in (-\delta, \delta)$,
+  then $M_X$ is differentiable there.
+\end{proof}
+
+\begin{example}
+  The contrapositive of the above theorem says that
+  if $\EE[|X|^k] = \infty$ for any $k \ge 1$, then
+  then $M_X$ cannot exist on any open neighborhood
+  of $0$. For instance, take a Cauchy random
+  variable.
+\end{example}
+
+\begin{example}
+  On the other hand, $M_X(t)$ can exist for
+  all $t \in \R$. Let $X \sim \mathrm{Ber}(p)$, then
+  \[
+    M_X(t) = \EE[e^{tX}]
+    = e^{0t} (1 - p) + e^t p
+    = 1 - p + pe^t,
+  \]
+  which exists on all of $\R$.
+\end{example}
+
+\begin{prop}
+  We have the following properties of moment
+  generating functions:
+  \begin{enumerate}[(i)]
+    \item Let $M_X$ be the mgf of $X$. Then
+      $M_{aX + b}(t) = e^{tb} M_X(at)$.
+    \item Let $X$ and $Y$ be independent random
+      variables with mgfs $M_X$ existing for
+      $t \in (-\delta_1, \delta_2)$ and $M_Y$ existing
+      for $t \in (-\delta_2, \delta_2)$. Then
+      for $t \in (-{\min\{\delta_1, \delta_2\}}, \min\{\delta_1, \delta_2\})$,
+      $M_{X + Y}(t)$ exists and
+      \[
+        M_{X + Y}(t) = M_X(t) M_Y(t).
+      \]
+  \end{enumerate}
+\end{prop}
+
+\begin{proof}
+  $(i)$ We have
+  \[
+    M_{aX + b}(t)
+    = \EE[e^{t(aX + b)}]
+    = e^{tb} \EE[e^{t(aX)}]
+    = e^{tb} M_X(at).
+  \]
+  $(ii)$ We have
+  \[
+    M_{X + Y}(t)
+    = \EE[e^{t(X + Y)}]
+    = \EE[e^{tX} e^{tY}]
+    = \EE[e^{tX}] \EE[e^{tY}]
+    = M_X(t) M_Y(t)
+  \]
+  by the independence of $X$ and $Y$.
+\end{proof}
+
+\section{Characteristic Functions}
+\begin{definition}
+  Let $X$ be a random variable. The
+  \emph{characteristic function} of $X$, denoted
+  by $\varphi_X$, is
+  \[
+    \varphi_X(t) = \EE[e^{itX}] \quad \text{for $t \in \R$}.
+  \]
+\end{definition}
+
+\begin{remark}
+  If $X$ has pdf $f_X$, then we define the expectation
+  of the complex-valued function $e^{itX}$ by
+  \[
+    \varphi_X(t) = \int_{-\infty}^\infty e^{itx} f_X(x) \, dx
+    = \int_{-\infty}^\infty \cos(tx) f_X(x) \, dx
+    + i \int_{-\infty}^\infty \sin(tx) f_X(x) \, dx.
+  \]
+  In particular, unlike the moment generating
+  function, $\varphi_X$ exists for all $t \in \R$.
+  This is because
+  \[
+    |\varphi_X(t)| = \left|\int_{-\infty}^\infty e^{itx} f_X(x) \, dx\right|
+    \le \int_{-\infty}^\infty |e^{itx} f_X(x)| \, dx
+    = \int_{-\infty}^\infty f_X(x) \, dx = 1.
+  \]
+  We similarly have the power series expansion
+  \[
+    \varphi_X(t) = \EE[e^{itX}] = \EE\left[\sum_{k = 0}^\infty \frac{(it)^k X^k}{k!}\right]
+    = \sum_{k = 0}^\infty \frac{(it)^k \EE[X^k]}{k!},
+  \]
+  which says that $\varphi_X^{(k)}(0) = i^k \EE[X^k]$
+  by the uniqueness of Taylor expansions.
+\end{remark}
+
+\begin{remark}
+  Similar uniqueness results and properties also hold
+  for characteristic functions, as for mgfs.
+  We also have some additional results for characteristic functions.
+\end{remark}
+
+\begin{theorem}
+  Let $X$ be a random variable. If
+  $\EE[|X|^N] < \infty$ for some integer $N \ge 1$,
+  then
+  \[
+    \varphi_X(t) = \sum_{k = 0}^N \frac{(it)^k \EE[X^k]}{k!} + o(t^N)
+    \quad \text{as $t \to 0$}.
+  \]
+\end{theorem}
+
+\begin{proof}
+  Look this up.
+\end{proof}
+
+\begin{theorem}
+  We have the following properties of characteristic
+  functions:
+  \begin{enumerate}[(i)]
+    \item Let $\varphi_X$ be the characteristic
+      function of $X$. Then $\varphi_{aX + b}(t) = e^{itb} \varphi_X(at)$.
+    \item Let $X$ and $Y$ be independent
+      random variables. Then for all $t \in \R$,
+      $\varphi_{X + Y}(t) = \varphi_X(t) \varphi_Y(t)$.
+  \end{enumerate}
+\end{theorem}
+
+\begin{proof}
+  The proofs carry over almost identically from the
+  mgf case. One detail to notice is that we have only
+  shown $\EE[AB] = \EE[A] \EE[B]$
+  for \emph{real-valued} random variables.
+  But this can be remedied by writing
+  \begin{align*}
+    \EE[e^{itX} e^{itY}]
+    &=\EE[(\cos(tX) + i \sin(tX))(\cos(tY) + i \sin(tY))] \\
+    &= \EE[\cos(tX) \cos(tY) - \sin(tX) \sin(tY)] + i \EE[\cos(tX) \sin(tY) + \EE[\sin(tX) \cos(tY)].
+  \end{align*}
+  These are now real-valued random variables and
+  we can proceed as before.
+\end{proof}
+
+\section{Important Inequalities}
+\begin{theorem}[Bienaym\'e-Chebyshev-Markov inequality]
+  Let $X$ be a nonnegative random variable. Then
+  for all $t > 0$, we have
+  \[
+    \PP(X \ge t) \le \frac{\EE[X]}{t}.
+  \]
+\end{theorem}
+
+\begin{proof}
+  We can split $X$ into two parts and get
+  \[
+    \EE[X] = \EE[X \mathbbm{1}_{X \ge t}] + \EE[X \mathbbm{1}_{X < t}]
+    \ge \EE[X \mathbbm{1}_{X \ge t}]
+    \ge t \EE[\mathbbm{1}_{X \ge t}]
+    = t \PP(X \ge t).
+  \]
+  Note that $\EE[X \mathbbm{1}_{X < t}] \ge 0$ as
+  $X \ge 0$ and we trivially have
+  $X \ge t$ on the set $\{X \ge t\}$.
+\end{proof}
+
+\begin{remark}
+  The previous inequality says that if
+  $\EE[X] < \infty$, then the tail behaves like
+  $1 / t$. If instead we have $\EE[X^2] < \infty$
+  and $X \ge 0$, then we can write
+  \[
+    \PP(X \ge t) = \PP(X^2 \ge t^2) = \PP(Y \ge t^2)
+    \le \frac{\EE[Y]}{t^2} = \frac{\EE[X^2]}{t^2}.
+  \]
+  This formulation of Markov's inequality is known
+  as \emph{Chebyshev's inequality}. Another version is
+  that
+  \[
+    \PP(|X - \EE[X]| \ge t) \le \frac{\Var[X]}{t^2}
+    \quad \text{for all $t > 0$}.
+  \]
+\end{remark}
+
+\begin{theorem}[Jensen's inequality]
+  Let $h : (a, b) \to \R$ be a convex function,
+  i.e. such that
+  \[
+    h(\lambda x + (1 - \lambda) y)
+    \le \lambda h(x) + (1 - \lambda) h(y)
+    \quad \text{for all $0 < \lambda < 1$.}
+  \]
+  Then we have $h(\EE[X]) \le \EE[h(X)]$.
+\end{theorem}
+
+\begin{proof}
+  Refer to Grimmett and Welsh.
+\end{proof}
+
+\begin{example}
+  The particular case $h(x) = x^2$ (note that $h''(x) \ge 0$ is sufficient to imply convexity) of Jensen's
+  inequality yields $(\EE[X])^2 \le \EE[X^2]$, i.e.
+  Cauchy-Schwarz.
+\end{example}
 
 \section{Homework Problems}
 Problems \#2, 3, 8, 10, 14, 17, 18, 20, 24

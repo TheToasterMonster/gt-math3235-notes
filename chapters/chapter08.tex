@@ -1,0 +1,226 @@
+\chapter{Nov.~19 --- Limit Theorems}
+
+\section{Convergence of Random Variables}
+
+\begin{example}
+  Let $\{a_n\}_{n = 1}^\infty$ be a sequence of
+  real numbers such that $a_n \to 0$ as $n \to \infty$.
+  Then
+  \[
+    \frac{a_1 + \dots + a_n}{n} \xrightarrow[n \to \infty]{} 0
+  \]
+  as well. This is known as \emph{Ces\`aro convergence}.
+  We sometimes write $a_1 + \dots + a_n = \sum_{k = 1}^n a_k = s_n$.
+\end{example}
+
+\begin{remark}
+  What does it mean for a sequence of
+  random variables to converge? Let $X_1, \dots, X_n, \dots$
+  be a sequence of random variables. Each
+  $X_k$ is a function $X_k : \Omega \to \R$.
+  One possible notion of convergence is
+  the pointwise convergence of the $X_k$. But this is
+  not very useful as it is not very
+  likely. If the $X_k$ are
+  coin flips, then we get a random
+  sequence of $0$s and $1$s. This probably does
+  not converge pointwise.
+\end{remark}
+
+\begin{definition}
+  A sequence $\{X_n\}_{n = 1}^\infty$ of random
+  variables \emph{converges in mean-square}
+  to $X$ if
+  \[
+    \lim_{n \to \infty} \EE[(X_n - X)^2] = 0.
+  \]
+  Convergence in mean-square is often denoted
+  by $X_n \xrightarrow[n \to \infty]{\mathrm{m.s.}} X$.
+\end{definition}
+
+\begin{definition}
+  A sequence $\{X_n\}_{n = 1}^\infty$ of random
+  variables \emph{converges in probability} to
+  $X$ if for all $\epsilon > 0$,
+  \[
+    \PP(|X_n - X| \ge \epsilon) \xrightarrow[n \to \infty]{} 0.
+  \]
+  Convergence in probability is often denoted
+  by $X_n \xrightarrow[n \to \infty]{\PP} X$.
+\end{definition}
+
+\begin{example}
+  Define $X_n$ by
+  $\PP(X_n = 0) = 1 - 1 / n$ and
+  $\PP(X_n = n) = 1 / n$.
+  In this case, we have $X_n \to 0$ in probability.
+  To see this, fix $\epsilon > 0$, and we can compute
+  that
+  \[
+    \PP(|X_n| \ge \epsilon)
+    = \PP(X_n = n) = \frac{1}{n} \xrightarrow[n \to \infty]{} 0.
+  \]
+\end{example}
+
+\begin{remark}
+  The idea behind mean-square convergence is that
+  we have
+  $\EE[Y^2] = 0$ if and only if $Y = 0$ almost surely.
+  One difference is that the $X_n$ must have
+  finite second moments in order to talk about
+  mean-square convergence, whereas this is
+  not necessary for convergence in probability.
+\end{remark}
+
+\begin{example}
+  Define $X_n$ the same way as in the previous
+  example. We can compute that
+  \[
+    \EE[X_n]^2 = \frac{n^2}{n} = n,
+  \]
+  which does not converge to $0$ as $n \to \infty$.
+  Thus $X_n$ does not converge to $0$ in mean-square.
+  In particular, this means that convergence
+  in probability does not imply convergence in
+  mean-square.
+\end{example}
+
+\begin{example}
+  Now define $X_n$ by
+  $\PP(X_n = 1) = 1 / n$ and
+  $\PP(X_n = 2) = 1 - 1 / n$. We can compute
+  \[
+    \EE[(X_n - 2)^2]
+    = (1 - 2)^2 \frac{1}{n} + (2 - 2)^2 \left(1 - \frac{1}{n}\right)
+    = \frac{1}{n} \xrightarrow[n \to \infty]{} 0,
+  \]
+  so we can conclude that
+  $X_n \xrightarrow[n \to \infty]{\mathrm{m.s.}} 2$.
+\end{example}
+
+\begin{prop}
+  Convergence in mean-square implies convergence
+  in probability.
+\end{prop}
+
+\begin{proof}
+  Recall that if $X \ge 0$ and $x > 0$, then by Markov's inequality
+  we have
+  \[
+    \PP(X \ge x) \le \frac{\EE[X]}{x}.
+  \]
+  Applying this inequality to $|X_n - X|$ and $\epsilon > 0$
+  gives us
+  \[
+    \PP(|X_n - X| \ge \epsilon)
+    = \PP(|X_n - X|^2 \ge \epsilon^2)
+    \le \frac{\EE[(X_n - X)^2]}{\epsilon^2}
+    \xrightarrow[n \to \infty]{} 0
+  \]
+  when $X_n \xrightarrow[n \to \infty]{\mathrm{m.s.}} X$,
+  since $\epsilon > 0$ is fixed. This shows
+  convergence in probability.
+\end{proof}
+
+\section{Weak Law of Large Numbers}
+\begin{theorem}[Weak law of large numbers]
+  Let $X_1, X_2, \dots, X_n, \dots$ be a sequence
+  of independent random variables, each with
+  mean $\mu$ and variance $\sigma^2$. Then
+  \[
+    \frac{1}{n}(X_1 + \dots + X_n) \xrightarrow[n \to \infty]{\mathrm{m.s.}} \mu.
+  \]
+\end{theorem}
+
+\begin{proof}
+  Let $S_n = X_1 + \dots + X_n$.
+  Since $\EE[X_1] = \EE[X_2] = \dots = \EE[X_n] = \mu$,
+  we have
+  \[
+    \EE\left[\frac{S_n}{n}\right]
+    = \frac{\mu_1 + \dots + \mu_n}{n} = \frac{n\mu}{n}
+    = \mu.
+  \]
+  Now we can compute that
+  \begin{align*}
+    \EE\left[\left(\frac{S_n}{n} - \mu\right)^2\right]
+    &= \EE\left[\left(\frac{S_n}{n} - \frac{\EE[S_n]}{n}\right)\right]
+    = \frac{1}{n^2} \EE[(S_n - \EE[S_n])^2] \\
+    &= \frac{1}{n^2} \EE\left[\left(\sum_{k = 1}^n X_k - \sum_{k = 1}^n \EE[X_k]\right)^2\right]
+    = \frac{1}{n^2} \EE\left[\left(\sum_{k = 1}^n (X_k - \EE[X_k])\right)^2\right] \\
+    &= \frac{1}{n^2} \Var[S_n]
+    = \frac{1}{n^2} \sum_{k = 1}^n \Var[X_k]
+    = \frac{n\sigma^2}{n^2} = \frac{\sigma^2}{n}
+    \xrightarrow[n \to \infty]{} 0,
+  \end{align*}
+  where $\Var[S_n] = \sum_{k = 1}^n \Var[X_k]$ by independence.
+  This implies that $S_n / n \xrightarrow[n \to \infty]{\mathrm{m.s.}} \mu$.
+\end{proof}
+
+\begin{remark}
+  In the above proof, it is enough to assume that the
+  $X_i$ are uncorrelated in place of independence.
+  It is also enough to assume that the variances
+  $\Var[X_i]$ are uniformly bounded, i.e.
+  $\Var[X_i] \le M$ for every $i$. In this case,
+  we can replace $\sigma^2$ with $M$ and still get
+  $M / n \to 0$ as $n \to \infty$.
+\end{remark}
+
+\begin{remark}
+  In ergodic theory, this type of result is known
+  as an \emph{ergodic theorem}.
+\end{remark}
+
+\begin{example}
+  Suppose that $X_i \sim \Ber(p)$ for $i \ge 1$
+  are independent. Note that $\EE[X_i] = p$.
+  Then the weak law of large numbers says that
+  we have
+  \[
+    \frac{X_1 + \dots + X_n}{n} \xrightarrow[n \to \infty]{\mathrm{m.s.}} \EE[X_1] = p = \PP(X_1 = 1).
+  \]
+  Mean-square convergence then implies
+  convergence in probability, so
+  this says that averaging the flips of a coin
+  will give the probability of getting heads
+  as the number of flips $n \to \infty$.
+\end{example}
+
+\begin{remark}
+  The (strong) law of large numbers says that
+  we also get convergence \emph{almost surely}.
+\end{remark}
+
+\section{Central Limit Theorem}
+
+\begin{remark}
+  The weak law of large numbers says that
+  $S_n / n \approx \mu$, i.e.
+  $S \approx n \mu$. But this is a first order
+  approximation: $n \mu \in \R$ is a constant,
+  but $S_n$ is random. Observe that
+  $S_n - n\mu$ is random and
+  \[
+    \EE[S_n - n\mu] = 0
+  \]
+  if all of the $X_k$ have the same mean.
+  This means that $S_n - n\mu$ has
+  mean $0$ and variance
+  \[
+    \Var[S_n - n\mu]
+    = \Var[S_n] = n\sigma^2
+  \]
+  if all of the $X_k$ have the same variance.
+  In particular, these calculations imply that
+  \[
+    Z_n = \frac{S_n - n\mu}{\sqrt{n\sigma^2}}
+  \]
+  has mean $0$ and variance $1$. The central
+  limit theorem says that in fact
+  $Z_n \approx \mathcal{N}(0, 1)$.
+\end{remark}
+
+\section{Homework Problems}
+Problems \#1, 2, 5, 7, 8, 11, 14, 15
+from Grimmett and Welsh.

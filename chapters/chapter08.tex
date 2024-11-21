@@ -195,7 +195,7 @@
 \begin{remark}
   The weak law of large numbers says that
   $S_n / n \approx \mu$, i.e.
-  $S \approx n \mu$. But this is a first order
+  $S_n \approx n \mu$. But this is a first order
   approximation: $n \mu \in \R$ is a constant,
   but $S_n$ is random. Observe that
   $S_n - n\mu$ is random and
@@ -218,6 +218,176 @@
   limit theorem says that in fact
   $Z_n \approx \mathcal{N}(0, 1)$.
 \end{remark}
+
+\begin{remark}
+  The convergence of $Z_n$ to
+  $\mathcal{N}(0, 1)$ is not in mean-square,
+  in probability, or almost surely.
+\end{remark}
+
+\begin{theorem}[Central limit theorem]
+  Let $X_1, X_2, \dots, X_n, \dots$ be i.i.d.
+  random variables with mean $\mu$ and
+  variance $\sigma^2 > 0$. Then
+  \[
+    Z_n = \frac{S_n - n\mu}{\sqrt{n\sigma^2}}
+  \]
+  converges to $\mathcal{N}(0, 1)$ in distribution,
+  i.e.
+  $F_{Z_n}(x) \to \Phi(x)$
+  pointwise as $n \to \infty$.
+\end{theorem}
+
+\begin{proof}
+  Assume each $X_k$ has a finite mgf, i.e. $M_{X_k}(t) = \EE[e^{tX_k}]$
+  exists for all $t \in \R$. Then
+  \[
+    M_{Z_n}(t)
+    = \EE\left[\exp\left(t \cdot \frac{S_n - n\mu}{\sqrt{n\sigma^2}}\right)\right]
+    = \EE\left[\exp\left(\frac{t}{\sqrt{n \sigma^2}} (S_n - n\mu)\right)\right].
+  \]
+  Since the $X_k$ are i.i.d., we obtain
+  \[
+    M_{Z_n}(t) = \prod_{k = 1}^n \EE\left[\exp\left(\frac{t}{\sqrt{n \sigma^2}} (X_k - \mu)\right)\right]
+    = \left(\EE\left[\exp\left(\frac{t}{\sqrt{n \sigma^2}} (X_1 - \mu)\right)\right]\right)^n.
+  \]
+  Using the power series expansion for
+  $\exp(x)$, this becomes
+  \[
+    M_{Z_n}(t)
+    = \left(\EE\left[1 + \frac{t}{\sqrt{n\sigma^2}}(X_1 - \mu) + \frac{t^2}{2 n \sigma^2}(X_1 - \mu)^2 + \frac{t^3}{6 (n\sigma^2)^{3 / 2}} (X_1 - \mu)^3 + \cdots\right]\right)^n.
+  \]
+  By the uniform convergence of the
+  power series for $e^x$ and using
+  $\EE[X_1 - \mu] = 0$, we obtain
+  \begin{align*}
+    M_{Z_n}(t)
+    &= \left(1 + \frac{t}{\sqrt{n\sigma^2}} \EE[X_1 - \mu] + \frac{t^2}{2n\sigma^2} \EE[(X_1 - \mu)^2] + o(1 / n)\right)^n \\
+    &= \left(1 + \frac{t^2}{2n} + o(1 / n)\right)^n
+    \xrightarrow[n \to \infty]{} e^{t^2 / 2}
+    = M_{\mathcal{N}(0, 1)}(t),
+  \end{align*}
+  where we recalled that
+  $(1 + x / n)^n \to e^x$ as $n \to \infty$.
+  Applying the inversion formula for mgfs, one
+  can obtain that $F_{Z_n}(x) \to \Phi(x)$
+  as $n \to \infty$. By using the characteristic
+  function in place of the mgf when it does not
+  exist and carrying through
+  a similar argument, one obtains the result in
+  general.
+\end{proof}
+
+\begin{remark}
+  Another way to think of the central limit theorem
+  is the following: If $X_1, \dots, X_n$
+  are independent random variables with
+  finite second moment, i.e.
+  $\EE[X_k^2] < \infty$ for each $1 \le k \le n$.
+  Then
+  \[
+    S_n = X_1 + \dots + X_n
+  \]
+  is approximately normal, i.e.
+  $F_{S_n}$ is approximately the cdf of a normal
+  random variable with
+  \[
+    \mu = \sum_{k = 1}^n \EE[X_k]
+    \quad \text{and} \quad
+    \sigma^2 = \sum_{k = 1}^n \Var[X_k].
+  \]
+  In particular, if we recenter and rescale
+  $S_n$, then we get that
+  \[
+    \frac{(X_1 + \dots + X_n) - \sum_{k = 1}^n \EE[X_k]}{\sqrt{\sum_{k = 1}^n \Var[X_k]}}
+    \approx \mathcal{N}(0, 1).
+  \]
+  In even more generality, if
+  $a_1, \dots, a_n \in \R$, then
+  \[
+    L_n = \sum_{k = 1}^n a_k X_k
+    \approx \mathcal{N}\left(\sum_{k = 1}^n a_k \EE[X_k], \sum_{k = 1}^n a_k^2 \Var[X_k]\right).
+  \]
+  The appropriate recentering and rescaling can be
+  done to relate this again to $\mathcal{N}(0, 1)$.
+\end{remark}
+
+\begin{remark}
+  Note that if $X_1, \dots, X_n \sim \Ber(1 / 2)$
+  are independent, then we know that
+  $S_n \sim \Bin(n, 1 / 2)$, which is not normal.
+  So we have to interpret the central limit theorem
+  in the appropriate sense.
+\end{remark}
+
+\begin{remark}
+  Here are a few remarks about the central limit
+  theorem:
+  \begin{itemize}
+    \item It is crucial in the central limit theorem
+      that
+      $\EE[X_k^2] < \infty$ for each $k$. One can even
+      prove a converse in the sense that if the
+      central limit theorem holds, then the
+      second moments are finite.
+    \item On the other hand, independence is
+      not so crucial. The central limit theorem
+      holds under a notion of ``weak dependence.''
+      Note that uncorrelated is not enough, however.
+    \item The order of convergence of the
+      central limit theorem is
+      $O(1 / \sqrt{n})$.
+  \end{itemize}
+\end{remark}
+
+\section{Applications of the Central Limit Theorem}
+
+\begin{example}
+  Consider the following problem: How many
+  times should a fair coin be tossed to be sure
+  with probability at least $0.95$ that the
+  proportion of
+  tails is between $0.49$ and $0.51$.
+
+  Note that flipping a fair coin $n$ times
+  is like studying independent
+  $X_1, \dots, X_n \sim \Ber(1 / 2)$. We want to
+  find $n$ such that
+  \[
+    \PP\left(0.49 \le \frac{X_1 + \dots + X_n}{n} \le 0.51\right) \ge 0.95.
+  \]
+  One way to proceed is to note that
+  $X_1 + \dots + X_n = \Ber(n, 1 / 2)$, so
+  \[
+    0.95 \le \PP(0.49n \le X_1 + \dots + X_n \le 0.51n)
+    = \sum_{k = 0.49n}^{0.51n} \binom{n}{k} 2^{-n},
+  \]
+  i.e. we need to find $n$ such that
+  \[
+    \sum_{k = 0.49n}^{0.51n} \binom{n}{k} \ge 2^n(0.95).
+  \]
+  This is difficult to compute. On the other hand,
+  the central limit theorem says that
+  \[
+    \mathcal{N}(0, 1)
+    \approx \frac{(X_1 + \dots + X_n) - n / 2}{\sqrt{n / 4}}
+    = \frac{2}{\sqrt{n}} \left(X_1 + \dots + X_n - \frac{n}{2}\right).
+  \]
+  Then if we let $Z_n = (X_1 + \dots + X_n - n / 2) / \sqrt{n / 4} \approx \mathcal{N}(0, 1)$, we have
+  \begin{align*}
+    \PP(0.49n \le X_1 + \dots + X_n \le 0.51n)
+    &= \PP\left(-\frac{0.01n}{\sqrt{n / 4}} \le \frac{(X_1 + \dots + X_n) - n / 2}{\sqrt{n / 4}} \le \frac{0.01n}{\sqrt{n / 4}}\right) \\
+    &\approx \PP(-0.02 \sqrt{n} \le Z_n \le 0.02 \sqrt{n})
+  \end{align*}
+  The above is $\Phi(0.02 \sqrt{n}) - \Phi(-0.02 \sqrt{n})$, so we would like
+  \[
+    0.95 \le \Phi(0.02 \sqrt{n}) - \Phi(-0.02 \sqrt{n})
+    = 2\Phi(0.02 \sqrt{n}) - 1,
+  \]
+  or $\Phi(0.02 \sqrt{n}) \ge 0.975$. One can use
+  a table or a calculator to find
+  $\sqrt{n} \ge 98$, or $n \ge 98^2 \approx 10^4$.
+\end{example}
 
 \section{Homework Problems}
 Problems \#1, 2, 5, 7, 8, 11, 14, 15

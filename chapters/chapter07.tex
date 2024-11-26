@@ -20,12 +20,12 @@
   Let $Y$ be a discrete random variable, say
   given by
   \[
-    \PP(Y = k) = 2^{k - 1}, \quad k = 1, 2, \ldots.
+    \PP(Y = k) = 2^{k - 1}, \quad k = 0, -1, -2, \ldots.
   \]
   Define
   \[
     F(x) = \frac{1}{2} F_Y(x) + \frac{1}{2} F_X(x)
-    = \frac{1}{2} F_Y(x) + \frac{1}{2}(1 - e^{-x}).
+    = \frac{1}{2} F_Y(x) + \frac{1}{2}(1 - e^{-x}) \mathbbm{1}_{(0, \infty)}(x).
   \]
   One can show that
   $F$ is increasing, $\lim_{x \to \infty} F(x) = 1$,

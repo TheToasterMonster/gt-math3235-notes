@@ -1,0 +1,37 @@
+\chapter{Additional Topics}
+
+\section{Decomposition of Random Variables}
+\begin{remark}
+  Recall that there are random variables
+  which are neither discrete nor absolutely
+  continuous.
+\end{remark}
+
+\begin{theorem}
+  Any cdf $F$ is the convex combination of
+  three cdfs, i.e.
+  \[
+    F = \alpha_1 F_1 + \alpha_2 F_2 + \alpha_3 F_3,
+  \]
+  where $\alpha_1, \alpha_2, \alpha_3 \ge 0$
+  and $\alpha_1 + \alpha_2 + \alpha_3 = 1$, and
+  \begin{itemize}
+    \item $F_1$ is a step function,
+    \item $F_2$ is the cdf of an absolutely
+      continuous random variable, i.e.
+      \[
+        F_2(x) = \int_{-\infty}^x f(t) \, dt
+      \]
+      where $f$ is a density,
+    \item and $F_3$ is a non-constant continuous
+      function which has $F_3'(x) = 0$ almost
+      everywhere on $\R$.
+  \end{itemize}
+\end{theorem}
+
+\begin{remark}
+  Distribution functions of the last type $F_3$
+  are said to be \emph{singular continuous}.
+  The \emph{Cantor-Lebesgue function} is an example of
+  such a singular continuous function.
+\end{remark}

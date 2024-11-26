@@ -351,7 +351,7 @@
 
   Note that flipping a fair coin $n$ times
   is like studying independent
-  $X_1, \dots, X_n \sim \Ber(1 / 2)$. We want to
+  $X_1, \dots, X_n \sim \Bin(1 / 2)$. We want to
   find $n$ such that
   \[
     \PP\left(0.49 \le \frac{X_1 + \dots + X_n}{n} \le 0.51\right) \ge 0.95.
@@ -388,6 +388,118 @@
   a table or a calculator to find
   $\sqrt{n} \ge 98$, or $n \ge 98^2 \approx 10^4$.
 \end{example}
+
+\begin{example}
+  Let $Y = X_1 + \dots + X_{15}$ be the sum of a
+  random sample of size 15 (i.e. $X_1, \dots, X_{15}$
+  are i.i.d. with a common distribution)
+  from the continuous distribution with pdf given
+  by
+  \[
+    f(x) = \frac{3}{2} x^2 \quad \text{for $-1 < x < 1$}.
+  \]
+  We would like to find an approximate
+  value for
+  $\PP(-0.3 \le Y \le 1.5)$. On one hand,
+  $Y$ has pdf given by
+  \[
+    f_Y = f_{X_1} * \dots * f_{X_{15}},
+  \]
+  but this is very difficult to compute. Instead,
+  we can use a normal approximation. We can compute
+  \[
+    \EE[Y] = 15 \cdot \EE[X_1]
+    = 15 \int_{-1}^1 x \cdot \frac{3}{2} x^2 \, dx
+    = 0
+  \]
+  since the integrand is odd. We can also compute
+  the variance by
+  \[
+    \Var[Y] = 15 \cdot \Var[X_1]
+    = 15 \int_{-1}^1 x^2 \cdot \frac{3}{2} x^2 \, dx
+    = \frac{45}{2}\left[\frac{x^5}{5}\right]_{-1}^1
+    = \frac{45}{2} \cdot \frac{2}{5} = 9.
+  \]
+  Thus $Y \approx \mathcal{N}(0, 9)$, i.e.
+  $Y / 3 \approx \mathcal{N}(0, 1)$. Using this
+  approximation, we obtain
+  \[
+    \PP(-0.3 \le Y \le 1.5)
+    \approx \PP(-0.1 \le \mathcal{N}(0, 1) \le 0.5)
+    = \Phi(0.5) - \Phi(-0.1) \approx 0.2313.
+  \]
+\end{example}
+
+\begin{remark}
+  As a general rule, when the distribution is
+  not known (i.e. we must estimate the mean and
+  variance from the samples), the central limit
+  theorem can be used for $n \ge 30$. However, if
+  we have knowledge of the population
+  mean and variance, then $n \ge 10$ is usually
+  sufficient.
+\end{remark}
+
+\section{The Poisson Approximation to the Binomial}
+\begin{remark}
+  We saw that if $X \sim \Bin(n, p)$
+  with $n \gg 1$ and $p \ll 1$, then
+  $X \approx Y$ where $Y \sim \Poi(\lambda = np)$.
+\end{remark}
+
+\begin{prop}
+  Let $X_1, \dots, X_n$ be independent Poisson
+  random variables with parameters
+  $\lambda_1, \dots, \lambda_n$. Then we have
+  $X_1 + \dots + X_n \sim \Poi(\lambda_1 + \dots + \lambda_n)$.
+\end{prop}
+
+\begin{proof}
+  The moment generating function of
+  $X \sim \Poi(\lambda)$ is
+  \[
+    M_X(t) = \EE[e^{tX}]
+    = \sum_{k = 0}^\infty e^{tk} \frac{\lambda^k e^{-\lambda}}{k!}
+    = e^{-\lambda }\sum_{k = 0}^\infty \frac{(\lambda e^t)^k}{k!}
+    = e^{-\lambda} e^{\lambda e^t}
+    = e^{\lambda(e^t - 1)}
+  \]
+  for all $t \in \R$. Then by independence,
+  we have
+  \[
+    M_{X_1 + \dots + X_n}(t)
+    = \prod_{k = 1}^n M_{X_k}(t)
+    = \prod_{k = 1}^n \exp(\lambda_k(e^t - 1))
+    = \exp((\lambda_1 + \dots + \lambda_n)(e^t - 1)).
+  \]
+  Thus by uniqueness, we have
+  $X_1 + \dots + X_n \sim \Poi(\lambda_1 + \dots + \lambda_n)$.
+\end{proof}
+
+\begin{remark}
+  Thus for sums of independent Bernoulli random
+  variables, we have two types of approximations:
+  \begin{itemize}
+    \item Poisson: $X_1 + \dots + X_n \approx \Poi(np)$.
+    \item Normal: $X_1 + \dots + X_n \approx \mathcal{N}(np, np(1 - p))$.
+  \end{itemize}
+  The two approximations are of the same order
+  because $\Poi(\lambda) \approx \mathcal{N}(\lambda, \lambda)$.
+  Thus if $p \ll 1$, then
+  \[
+    \Poi(np) \approx \mathcal{N}(np, np)
+    \approx \mathcal{N}(np, np(1 - p)).
+  \]
+  The approximation $\Poi(\lambda) \approx \mathcal{N}(\lambda, \lambda)$
+  is to be understood via their distribution
+  functions, i.e. that
+  \[
+    \PP(Y \le y)
+    \approx \PP(X \le y)
+  \]
+  if we have $Y \sim \Poi(\lambda)$ and
+  $X \sim \mathcal{N}(\lambda, \lambda)$.
+\end{remark}
 
 \section{Homework Problems}
 Problems \#1, 2, 5, 7, 8, 11, 14, 15

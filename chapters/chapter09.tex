@@ -4,7 +4,7 @@
 \begin{remark}
   Recall that there are random variables
   which are neither discrete nor absolutely
-  continuous.
+  continuous.\footnote{See Example \ref{ex:other-rv} for a concrete example of such a random variable.}
 \end{remark}
 
 \begin{theorem}
@@ -34,4 +34,102 @@
   are said to be \emph{singular continuous}.
   The \emph{Cantor-Lebesgue function} is an example of
   such a singular continuous function.
+\end{remark}
+
+\section{Singular Random Variables}
+Recall that for $x \in [0, 1]$, we have a
+\emph{dyadic} expansion
+\[
+  x = \sum_{k = 1}^\infty \frac{x_k}{2^k},
+\]
+where $x_k \in \{0, 1\}$. This expansion is not
+a priori unique, but we can choose the unique
+expansion which has infinitely many ones.
+Similarly, for $a_k \in \{0, 1, 2\}$, we have a
+\emph{ternary} expansion
+\[
+  x = \sum_{k = 1}^\infty \frac{a_k}{3^k}.
+\]
+
+\begin{definition}
+  Define the sets $C_k \subseteq [0, 1]$ by removing
+  the middle of each interval in $C_{k - 1}$, i.e.
+  \[
+    C_1 = [0, 1], \quad
+    C_2 = [0, 1 / 3] \cup [2 / 3, 1], \quad
+    C_3 = [0, 1 / 9] \cup [2 / 9, 1 / 3] \cup [2 / 3, 7 / 9] \cup [8 / 9, 1],
+  \]
+  where $C_1 \supseteq C_2 \supseteq C_3 \supseteq \cdots$.
+  Then the \emph{(middle-thirds) Cantor set} is
+  $C = \bigcap_{k = 1}^\infty C_k$.
+\end{definition}
+
+\begin{remark}
+  Note that $C$ is nonempty. This is because $C$ is
+  a nested sequence of nonempty compact sets, so
+  their intersection is nonempty. A more
+  explicit way to see this is to notice that
+  \[
+    C = \left\{
+      x \in [0, 1] : x = \sum_{k = 1}^\infty \frac{a_k}{3^k}, \text{ where } a_k = 0 \text{ or } a_k = 2
+    \right\}.
+  \]
+  Now for any $x \in C$, i.e. $x = \sum_{k = 1}^\infty a_k 3^{-k}$ for $a_k \in \{0, 2\}$,
+  define the function
+  \[
+    F(x)  = \frac{1}{2} \sum_{k = 1}^\infty \frac{a_k}{2^k}.
+  \]
+  Observe that $F(0) = 0$ since
+  $a_k = 0$ for all $k$, and $F(1) = 1$ since
+  $a_k = 1$ for all $k$. Also notice that
+  $F(x) \le F(y)$ whenever $x \le y$, so that
+  $F$ is non-increasing. Extend $F$ to $[0, 1]$
+  by setting
+  \[
+    F(x) = \sup\{F(y) : y \in C \cap [0, x)\}
+  \]
+  for $x \notin C$. Finally extend $F$ to
+  all of $\R$ by $F(x) = 0$ for $x < 0$ and
+  $F(x) = 1$ for $x > 1$. Thus we have a function
+  $F : [0, 1]$ which is non-decreasing,
+  $\lim_{x \to -\infty} F(x) = 0$, and
+  $\lim_{x \to \infty} F(x) = 1$. Note also that
+  $F$ is continuous. This function $F$
+  constructed in this way is called the
+  \emph{Cantor-Lebesgue function}.
+
+  In particular, the properties above guarantee
+  that $F$ is a cdf, so let $X$ be a random
+  variable having $F$ as a cdf. Clearly $F$ is
+  not discrete because $F$ is continuous.
+  However, $F$ is also not absolutely continuous, i.e.
+  it is not given via a density. To see this,
+  observe that $F$ is constant on the deleted intervals
+  \[
+    (1 / 3, 2 / 3), \quad
+    (1 / 9, 2 / 9), \quad
+    (7 / 9, 8 / 9), \quad \ldots,
+  \]
+  and the total length of these intervals is equal to
+  \[
+    1 \cdot \frac{1}{3} + 2 \cdot \frac{1}{9}
+    + 4 \cdot \frac{1}{27}
+    + \dots = \sum_{k = 1}^\infty \frac{2^k}{3^k} = 1.
+  \]
+  In particular, this means that
+  $F'(x) = 0$ almost everywhere on $[0, 1]$. Thus
+  if we had
+  \[
+    F(x)
+    = \int_{-\infty}^x f(t) \, dt,
+  \]
+  then we must have $f(x) = 0$ for almost all
+  $0$, which is impossible since
+  $F$ is non-constant. Therefore, $F$ cannot be
+  given by a density, hence it is not absolutely
+  continuous.
+
+  So $F$ is of another type, called \emph{singular
+  continuous}, which is continuous but
+  not given by a density.
 \end{remark}
